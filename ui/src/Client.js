@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 export function getSummary(cb) {
   return fetch('/api/summary', {
     accept: 'application/json',
@@ -24,7 +23,7 @@ function checkStatus(response) {
   const error = new Error(`HTTP Error ${response.statusText}`);
   error.status = response.statusText;
   error.response = response;
-  console.log(error); // eslint-disable-line no-console
+  console.log(error);
   throw error;
 }
 

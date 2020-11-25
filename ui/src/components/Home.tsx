@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Link } from 'react-router-dom';
-import { getSummary, getClinics } from '../Client';
 import { Button } from '@material-ui/core';
 
-const Tech = ({ match }) => {
+import { getSummary, getClinics } from '../Client';
+
+interface TechProps {
+  match: any;
+}
+
+const Tech = ({ match }: TechProps) => {
   return <div>Current Route: {match.params.tech}</div>;
 };
 
@@ -11,8 +16,8 @@ export const Home = () => {
   const [title, setTitle] = useState('');
 
   useEffect(() => {
-    getSummary((summary) => setTitle(summary.content));
-    getClinics((clinics) => console.log(clinics));
+    getSummary(({ content }: any) => setTitle(content));
+    getClinics((clinics: any) => console.log(clinics));
   }, []);
 
   return (
