@@ -2,14 +2,14 @@
     "version": "1.4.0",
     "project": {
         "name": "scala-play-react-seed-build-build",
-        "directory": "/Users/showduhtung/Projects/learnScala/scala-play-react-seed/project/project",
-        "workspaceDir": "/Users/showduhtung/Projects/learnScala/scala-play-react-seed/project/project",
+        "directory": "/Users/showduhtung/Projects/workProjects/scala-play-react-seed/project/project",
+        "workspaceDir": "/Users/showduhtung/Projects/workProjects/scala-play-react-seed/project/project",
         "sources": [
-            "/Users/showduhtung/Projects/learnScala/scala-play-react-seed/project/project/src/main/scala-2.12",
-            "/Users/showduhtung/Projects/learnScala/scala-play-react-seed/project/project/src/main/scala",
-            "/Users/showduhtung/Projects/learnScala/scala-play-react-seed/project/project/src/main/java",
-            "/Users/showduhtung/Projects/learnScala/scala-play-react-seed/project/project/src/main/scala-sbt-1.0",
-            "/Users/showduhtung/Projects/learnScala/scala-play-react-seed/project/project/target/scala-2.12/sbt-1.0/src_managed/main"
+            "/Users/showduhtung/Projects/workProjects/scala-play-react-seed/project/project/src/main/scala-2.12",
+            "/Users/showduhtung/Projects/workProjects/scala-play-react-seed/project/project/src/main/scala",
+            "/Users/showduhtung/Projects/workProjects/scala-play-react-seed/project/project/src/main/java",
+            "/Users/showduhtung/Projects/workProjects/scala-play-react-seed/project/project/src/main/scala-sbt-1.0",
+            "/Users/showduhtung/Projects/workProjects/scala-play-react-seed/project/project/target/scala-2.12/sbt-1.0/src_managed/main"
         ],
         "dependencies": [
             
@@ -102,11 +102,11 @@
             "/Users/showduhtung/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/completion_2.12/1.3.5/completion_2.12-1.3.5.jar",
             "/Users/showduhtung/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/librarymanagement-ivy_2.12/1.3.1/librarymanagement-ivy_2.12-1.3.1.jar"
         ],
-        "out": "/Users/showduhtung/Projects/learnScala/scala-play-react-seed/project/project/.bloop/scala-play-react-seed-build-build",
-        "classesDir": "/Users/showduhtung/Projects/learnScala/scala-play-react-seed/project/project/.bloop/scala-play-react-seed-build-build/scala-2.12/sbt-1.0/classes",
+        "out": "/Users/showduhtung/Projects/workProjects/scala-play-react-seed/project/project/.bloop/scala-play-react-seed-build-build",
+        "classesDir": "/Users/showduhtung/Projects/workProjects/scala-play-react-seed/project/project/.bloop/scala-play-react-seed-build-build/scala-2.12/sbt-1.0/classes",
         "resources": [
-            "/Users/showduhtung/Projects/learnScala/scala-play-react-seed/project/project/src/main/resources",
-            "/Users/showduhtung/Projects/learnScala/scala-play-react-seed/project/project/target/scala-2.12/sbt-1.0/resource_managed/main"
+            "/Users/showduhtung/Projects/workProjects/scala-play-react-seed/project/project/src/main/resources",
+            "/Users/showduhtung/Projects/workProjects/scala-play-react-seed/project/project/target/scala-2.12/sbt-1.0/resource_managed/main"
         ],
         "scala": {
             "organization": "org.scala-lang",
@@ -123,7 +123,7 @@
                 "/Users/showduhtung/.sbt/boot/scala-2.12.10/lib/jansi.jar",
                 "/Users/showduhtung/.sbt/boot/scala-2.12.10/lib/scala-xml_2.12.jar"
             ],
-            "analysis": "/Users/showduhtung/Projects/learnScala/scala-play-react-seed/project/project/target/streams/compile/bloopAnalysisOut/_global/streams/inc_compile_2.12.zip",
+            "analysis": "/Users/showduhtung/Projects/workProjects/scala-play-react-seed/project/project/target/streams/compile/bloopAnalysisOut/_global/streams/inc_compile_2.12.zip",
             "setup": {
                 "order": "mixed",
                 "addLibraryToBootClasspath": true,
@@ -191,9 +191,9 @@
         "platform": {
             "name": "jvm",
             "config": {
-                "home": "/Users/showduhtung/.jabba/jdk/adopt@1.11.0-9/Contents/Home",
+                "home": "/usr/local/Cellar/openjdk/15.0.1/libexec/openjdk.jdk/Contents/Home",
                 "options": [
-                    "-Duser.dir=/Users/showduhtung/Projects/learnScala/scala-play-react-seed/project/project"
+                    "-Duser.dir=/Users/showduhtung/Projects/workProjects/scala-play-react-seed/project/project"
                 ]
             },
             "mainClass": [
