@@ -1,0 +1,3 @@
+CREATE USER stung WITH PASSWORD 'password'
+
+CREATE DATABASE slickClinics WITH OWNER=stung
