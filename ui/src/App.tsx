@@ -1,22 +1,30 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+// import Auth from './routes/Auth';
+import { Router, Route, Switch } from 'react-router-dom';
+import { getClinics, getSummary } from './Client';
+import history from './history';
+// import { PrivateRoute } from './components/shared/PrivateRoute';
+// import Main from './routes/Main';
 
-import { Home } from './components/Home';
-import { About } from './components/About';
+export interface IAppProps {}
 
-import './css/App.css';
+export default function IApp(props: IAppProps) {
+  const [title, setTitle] = useState('');
 
-export const App = () => {
+  useEffect(() => {
+    getClinics((clinics: any) => console.log(clinics));
+    getSummary((summary: any) => setTitle(summary.content));
+  }, []);
   return (
-    <Router>
+    <Router history={history}>
       <Switch>
-        <Route exact path="/">
-          <Home />
+        {/* <Route path="/auth">
+          <Auth />
         </Route>
-        <Route path="/about">
-          <About />
-        </Route>
+        <PrivateRoute path="/">
+          <Main />
+        </PrivateRoute> */}
       </Switch>
     </Router>
   );
-};
+}

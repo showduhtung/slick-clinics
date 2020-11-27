@@ -1,5 +1,5 @@
 export function getSummary(cb) {
-  return fetch('/api/summary', {
+  return fetch(`/api/summary`, {
     accept: 'application/json',
   })
     .then(checkStatus)
@@ -8,7 +8,7 @@ export function getSummary(cb) {
 }
 
 export function getClinics(cb) {
-  return fetch('/api/getClinics', {
+  return fetch(`/api/getClinics`, {
     accept: 'application/json',
   })
     .then(checkStatus)
@@ -17,9 +17,7 @@ export function getClinics(cb) {
 }
 
 function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  }
+  if (response.status >= 200 && response.status < 300) return response;
   const error = new Error(`HTTP Error ${response.statusText}`);
   error.status = response.statusText;
   error.response = response;
