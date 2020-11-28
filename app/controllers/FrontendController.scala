@@ -21,4 +21,5 @@ class FrontendController @Inject()(assets: Assets, errorHandler: HttpErrorHandle
   } else {
     if (resource.contains(".")) assets.at(resource) else index
   }
+  def hi: Action[AnyContent] = assets.at("index.html")
 }
