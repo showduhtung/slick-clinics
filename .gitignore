@@ -16,3 +16,4 @@ server.pid
 .cache
 /.bloop
 /.bloop/**/*
+/.metals
