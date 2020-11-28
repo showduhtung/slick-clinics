@@ -15,3 +15,17 @@ server.pid
 /dist/
 .cache
 
+
+/.bloop
+/.bloop/**/*
+/.metals/
+/.metals/*
+/.metals/**/*
+
+.bloop
+.bloop/**/*
+.metals/
+.metals/*
+.metals/**/*
+
+metals/project/
