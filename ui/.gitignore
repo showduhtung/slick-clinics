@@ -10,7 +10,6 @@ npm-debug.*
 web-build/
 web-report/
 dist/
-public/
 
 
 # secrets

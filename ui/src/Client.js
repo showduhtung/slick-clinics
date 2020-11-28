@@ -8,7 +8,7 @@ export function getSummary(cb) {
 }
 
 export function getClinics(cb) {
-  return fetch(`/api/getClinics`, {
+  return fetch(`/api/clinics`, {
     accept: 'application/json',
   })
     .then(checkStatus)
