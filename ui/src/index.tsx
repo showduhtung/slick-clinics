@@ -1,6 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { App } from './App';
-import './css/index.css';
+// import { Provider } from 'react-redux';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import App from './app';
+
+const Index = () => {
+  return <App />;
+};
+
+ReactDOM.render(<Index />, document.getElementById('root'));
