@@ -16,6 +16,7 @@ server.pid
 .cache
 
 
+
 /.bloop
 /.bloop/**/*
 /.metals/
@@ -28,4 +29,3 @@ server.pid
 .metals/*
 .metals/**/*
 
-metals/project/
