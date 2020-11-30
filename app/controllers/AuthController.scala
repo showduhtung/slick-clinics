@@ -11,7 +11,7 @@ import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import play.api.libs.json.JsArray
+import play.api.libs.json._
 
 @Singleton
 class AuthController @Inject()(protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents,
@@ -19,16 +19,31 @@ class AuthController @Inject()(protected val dbConfigProvider: DatabaseConfigPro
 
   private val model = new UserRepository(db)
 
-  def login = Action.async { implicit request: Request[AnyContent]=>
-    val content = request.body
-    val jsonObject = content.asJson
-    val users = model.getUser("shaun.tung@gmail.com", "password")
-
-    // create token
-    // Redirect()
-    users.map(user => Ok(Json.obj("id" -> user.id, "email" -> user.email, "password" -> user.password, "firstName" -> user.firstname, "lastName" -> user.lastname, "isAdmin" -> user.isadmin, "accessToken"-> "accessToken")))
-    
+  def withJsonBody[A](f: A => Future[Result])(implicit request: Request[AnyContent], reads: Reads[A]): Future[Result] = {
+    request.body.asJson.map { body =>
+      Json.fromJson[A](body) match {
+        case JsSuccess(a, path) => f(a)
+        case e @ JsError(_) => Future.successful(Redirect("/error"))
+      }
+    }.getOrElse(Future.successful(Redirect(routes.FrontendController.index)))
   }
 
+  implicit val userDataReads = Json.reads[UserResponse]
 
+  def login = Action.async { implicit request: Request[AnyContent]=>
+    withJsonBody[UserResponse] { reqBody =>
+      // // create token
+      val response = model.getUser("shaun.tung@gmail.com", "password")
+      response.map(user => Ok(Json.obj(
+        "id" -> user.id, 
+        "email" -> user.email, 
+        "password" -> user.password, 
+        "firstName" -> user.firstname, 
+        "lastName" -> user.lastname, 
+        "isAdmin" -> user.isadmin, 
+        "accessToken"-> "accessToken"
+      )))
+    }
+  
+  }
 }

@@ -12,3 +12,5 @@ GET     /api/clinics                controllers.HomeController.getClinics
 
 # Serve static assets under public directory
 GET     /*file                      controllers.FrontendController.assetOrDefault(file)
+
+GET   /error             controllers.Default.error

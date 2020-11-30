@@ -4,7 +4,6 @@ export const authenticateLogin = async (
   email: string,
   password: string,
 ): Promise<AxiosResponse> => {
-  console.log('authenticating');
   const res = await axios.post('/api/login', { email, password });
   if (res.data.accessToken)
     localStorage.setItem('slick-clinic-auth', res.data.accessToken);
