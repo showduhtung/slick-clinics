@@ -1,4 +1,5 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -14,6 +15,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { authenticateLogin } from '../../apis';
+import { checkCredentials } from '../../store/actions';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 function Copyright() {
   return (
@@ -28,20 +32,52 @@ function Copyright() {
   );
 }
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    height: '100vh',
+  },
+  image: {
+    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  },
+  paper: {
+    margin: theme.spacing(8, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
+
 export const Login = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('shaun.tung@gmail.com');
   const [password, setPassword] = useState('password');
-  const [tokenExistance, setTokenExistance] = useState(
-    !!localStorage.getItem('slick-clinic-auth'),
-  );
-  if (tokenExistance) return <Redirect to="/home" />;
 
-  async function handleLogin(event?: FormEvent<HTMLFormElement>) {
+  const { isTokenAvailable } = useSelector((state: RootState) => state.auth);
+
+  function handleLogin(event?: FormEvent<HTMLFormElement>) {
     event?.preventDefault();
-    const res = await authenticateLogin(email, password);
-    if (res.data.accessToken) setTokenExistance(true);
+    // const res = await authenticateLogin(email, password);
+    dispatch(checkCredentials(email, password));
   }
+
+  if (isTokenAvailable) return <Redirect to="/home" />;
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -113,34 +149,3 @@ export const Login = () => {
     </Grid>
   );
 };
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '100vh',
-  },
-  image: {
-    backgroundImage: 'url(https://source.unsplash.com/random)',
-    backgroundRepeat: 'no-repeat',
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
-  paper: {
-    margin: theme.spacing(8, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
