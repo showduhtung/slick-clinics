@@ -3,9 +3,10 @@
 # ~~~~
 
 # Serve index page from public directory
-GET     /                           controllers.FrontendController.index()
+GET     /                           controllers.FrontendController.index
 
 # An example route (Prefix all API routes with apiPrefix defined in application.conf)
+POST    /api/login                  controllers.AuthController.login
 GET     /api/summary                controllers.HomeController.appSummary
 GET     /api/clinics                controllers.HomeController.getClinics
 

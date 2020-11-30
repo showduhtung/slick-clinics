@@ -25,9 +25,8 @@ private val model = new ClinicRepository(db)
   }
   def getClinics = Action.async { implicit request =>
     val clinicList = model.getClinics()
-    val clinicResult = clinicList.map{
+    clinicList.map{
       clinics => Ok(JsArray(clinics.map(clinic => Json.obj("id" -> clinic.id, "name" -> clinic.name, "address" -> clinic.address))))
     }
-    clinicResult
   }
 }

@@ -1,5 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { getClinics, getSummary } from '../apis/Client';
 
-const Home = () => <div>Welcome Home Friend</div>;
-
+const Home = () => {
+  useEffect(() => {
+    getClinics((clinics: any) => console.log(clinics));
+    getSummary((summary: any) => console.log(summary));
+  }, []);
+  return <div>Welcome Home Friend</div>;
+};
 export default Home;
