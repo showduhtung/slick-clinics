@@ -3,11 +3,16 @@
 # ~~~~
 
 # Serve index page from public directory
-GET     /                           controllers.FrontendController.index()
+GET     /                           controllers.FrontendController.index
 
 # An example route (Prefix all API routes with apiPrefix defined in application.conf)
-GET     /api/summary                controllers.HomeController.appSummary
-GET     /api/getClinics                controllers.HomeController.getClinics
++nocsrf
+POST    /api/login                  controllers.AuthController.login
+GET     /api/summary                controllers.ClinicController.appSummary
+GET     /api/clinics                controllers.ClinicController.getClinics
+POST    /api/user                   controllers.UserController.createUser
 
 # Serve static assets under public directory
 GET     /*file                      controllers.FrontendController.assetOrDefault(file)
+
+GET    /error             controllers.Default.error

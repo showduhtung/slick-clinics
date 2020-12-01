@@ -1,29 +1,28 @@
 import React, { useEffect, useState } from 'react';
-// import Auth from './routes/Auth';
 import { Router, Route, Switch } from 'react-router-dom';
-import { getClinics, getSummary } from './Client';
-import history from './history';
-// import { PrivateRoute } from './components/shared/PrivateRoute';
-// import Main from './routes/Main';
+
+import history from './shared/history';
+import Home from './components/Home';
+import Auth from './routes/auth';
+import { PrivateRoute } from './components/shared';
+import { getClinics, getSummary } from './apis/Client';
 
 export interface IAppProps {}
 
 export default function IApp(props: IAppProps) {
-  const [title, setTitle] = useState('');
-
-  useEffect(() => {
-    getClinics((clinics: any) => console.log(clinics));
-    getSummary((summary: any) => setTitle(summary.content));
-  }, []);
+  // useEffect(() => {
+  //   getClinics((clinics: any) => console.log(clinics));
+  //   getSummary((summary: any) => console.log(summary));
+  // }, []);
   return (
     <Router history={history}>
       <Switch>
-        {/* <Route path="/auth">
+        <Route path="/auth">
           <Auth />
         </Route>
         <PrivateRoute path="/">
-          <Main />
-        </PrivateRoute> */}
+          <Home />
+        </PrivateRoute>
       </Switch>
     </Router>
   );
