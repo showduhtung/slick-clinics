@@ -1,3 +1,4 @@
+
 package models
 
 import java.util.UUID
@@ -12,10 +13,12 @@ import scala.util.{Failure, Success}
 import slick.jdbc.PostgresProfile.api._
 
 import java.util.Calendar
+import scala.concurrent.Await
 
 
 class SessionRepository(db: Database)(implicit ec: ExecutionContext) {
   val calendar = Calendar.getInstance()
+
   private def checkExpirationDate(date: Date): Boolean = {
     val today = new Date(calendar.getTimeInMillis())
     date.after(today)
@@ -25,9 +28,13 @@ class SessionRepository(db: Database)(implicit ec: ExecutionContext) {
     db.run(Session.filter(session => session.token === token).result.head)
   }
 
-  def checkSession(token: String): Future[Boolean] = {
-    db.run(Session.filter(session => session.token === token).result.head)
-    .map(session => checkExpirationDate(session.expiration))
+  def checkTokenExpiration(token: Option[String]): Boolean = {
+    val session = 
+      db.run(Session.filter(session => session.token === token).result.head)
+        .map(sessionRow => checkExpirationDate(sessionRow.expiration))
+
+    // hack to return Boolean
+    Await.result(session, scala.concurrent.duration.Duration(2, "seconds"))
   }
 
   def generateToken(userId: Int, isAdmin: Boolean): Future[String] = {
@@ -47,4 +54,3 @@ class SessionRepository(db: Database)(implicit ec: ExecutionContext) {
     }
   }
 }
-
