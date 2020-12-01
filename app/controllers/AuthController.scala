@@ -18,6 +18,7 @@ class AuthController @Inject()(protected val dbConfigProvider: DatabaseConfigPro
  ) extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile]{
 
   private val model = new UserRepository(db)
+  private val session = new SessionRepository(db)
 
   def withJsonBody[A](f: A => Future[Result])(implicit request: Request[AnyContent], reads: Reads[A]): Future[Result] = {
     request.body.asJson.map { body =>
@@ -32,17 +33,28 @@ class AuthController @Inject()(protected val dbConfigProvider: DatabaseConfigPro
 
   def login = Action.async { implicit request: Request[AnyContent]=>
     withJsonBody[UserResponse] { reqBody =>
-      // // create token
-      val response = model.getUser("shaun.tung@gmail.com", "password")
-      response.map(user => Ok(Json.obj(
-        "id" -> user.id, 
-        "email" -> user.email, 
-        "password" -> user.password, 
-        "firstName" -> user.firstname, 
-        "lastName" -> user.lastname, 
-        "isAdmin" -> user.isadmin, 
-        "accessToken"-> "accessToken"
-      )))
+      val loggedInUser = model.getUser("shaun.tung@gmail.com", "password")
+      val token = session.generateToken(1, true)
+      val resolvedUsers = for {
+        a <- loggedInUser
+        b <- token
+      } yield(a, b)
+
+      
+      resolvedUsers.flatMap { value => 
+        val user = value._1
+        val token = value._2
+        loggedInUser.map(user => Ok(Json.obj(
+          "id" -> user.id, 
+          "email" -> user.email, 
+          "password" -> user.password, 
+          "firstName" -> user.firstname, 
+          "lastName" -> user.lastname, 
+          "isAdmin" -> user.isadmin, 
+          "accessToken"-> token
+        )))
+      }
+
     }
   
   }
