@@ -15,11 +15,11 @@ import slick.jdbc.JdbcProfile
 @Singleton
 class UserController @Inject()(protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents,
  ) extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
-     private val model = new UserRepository(db)
+    private val model = new UserRepository(db)
      
-     def withJsonBody[A](f: A => Future[Result])(implicit request: Request[AnyContent], reads: Reads[A]): Future[Result] = {
-         println(request.body.asJson)
-         request.body.asJson.map { body =>
+    def withJsonBody[A](f: A => Future[Result])(implicit request: Request[AnyContent], reads: Reads[A]): Future[Result] = {
+        println(request.body.asJson)
+        request.body.asJson.map { body =>
             Json.fromJson[A](body) match {
                 case JsSuccess(a, path) => f(a)
                 case e @ JsError(_) => Future.successful(Redirect("/error"))

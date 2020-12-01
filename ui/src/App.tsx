@@ -10,10 +10,10 @@ import { getClinics, getSummary } from './apis/Client';
 export interface IAppProps {}
 
 export default function IApp(props: IAppProps) {
-  useEffect(() => {
-    getClinics((clinics: any) => console.log(clinics));
-    getSummary((summary: any) => console.log(summary));
-  }, []);
+  // useEffect(() => {
+  //   getClinics((clinics: any) => console.log(clinics));
+  //   getSummary((summary: any) => console.log(summary));
+  // }, []);
   return (
     <Router history={history}>
       <Switch>

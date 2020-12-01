@@ -14,7 +14,6 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { authenticateLogin } from '../../apis';
 import { checkCredentials } from '../../store/actions';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
@@ -73,7 +72,6 @@ export const Login = () => {
 
   function handleLogin(event?: FormEvent<HTMLFormElement>) {
     event?.preventDefault();
-    // const res = await authenticateLogin(email, password);
     dispatch(checkCredentials(email, password));
   }
 

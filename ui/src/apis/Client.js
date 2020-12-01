@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export function getSummary(cb) {
   return fetch(`/api/summary`, {
     accept: 'application/json',
@@ -7,13 +9,10 @@ export function getSummary(cb) {
     .then(cb);
 }
 
-export function getClinics(cb) {
-  return fetch(`/api/clinics`, {
-    accept: 'application/json',
-  })
-    .then(checkStatus)
-    .then(parseJSON)
-    .then(cb);
+export async function getClinics(cb) {
+  const res = await axios.get('/api/clinics');
+  checkStatus(res);
+  return res;
 }
 
 function checkStatus(response) {
