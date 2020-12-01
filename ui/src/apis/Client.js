@@ -11,6 +11,7 @@ export function getSummary(cb) {
 
 export async function getClinics(cb) {
   const res = await axios.get('/api/clinics');
+  console.log(res.data);
   checkStatus(res);
   return res;
 }

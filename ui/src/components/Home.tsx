@@ -3,7 +3,7 @@ import { getClinics, getSummary } from '../apis/Client';
 
 const Home = () => {
   useEffect(() => {
-    getClinics((clinics: any) => console.log(clinics));
+    getClinics();
     getSummary((summary: any) => console.log(summary));
   }, []);
   return <div>Welcome Home Friend</div>;
