@@ -1,17 +1,15 @@
 package controllers
 
-import javax.inject._
-
-import play.api.libs.json.Json
-import play.api.mvc._
 import models._
-
+import javax.inject._
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.HasDatabaseConfigProvider
-import slick.jdbc.JdbcProfile
+import play.api.libs.json._
+import play.api.mvc._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import play.api.libs.json._
+import slick.jdbc.JdbcProfile
 
 
 @Singleton

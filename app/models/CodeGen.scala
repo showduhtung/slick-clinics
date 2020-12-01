@@ -1,7 +1,5 @@
 package models
 
-
-
 object CodeGen extends App {
     slick.codegen.SourceCodeGenerator.run(
         "slick.jdbc.PostgresProfile",
