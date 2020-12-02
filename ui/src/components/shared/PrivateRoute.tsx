@@ -2,13 +2,20 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { getLocalStorageState } from '../../shared/utilities';
 
-export const PrivateRoute = ({ children, ...rest }: any) => {
+const validateUser = (condition: string): boolean => {
+  const token = getLocalStorageState('playclin_token')?.split('-');
+  const isAdmin = token && token[token?.length - 1] === 'true';
+  return condition === 'isAdmin' ? !!isAdmin : token?.length > 0;
+};
+
+export const PrivateRoute = ({ children, redirection, condition, ...rest }: any) => {
   console.log(`Checking if you're allowed in here`);
-  const token = getLocalStorageState('playclin_token');
+  const validation = validateUser(condition);
+
   return (
     <Route
       {...rest}
-      render={({ location }) => (token ? children : <Redirect to="/auth/login" />)}
+      render={() => (validation ? children : <Redirect to={redirection} />)}
     />
   );
 };

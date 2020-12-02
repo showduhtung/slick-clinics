@@ -84,10 +84,10 @@
 //    *  @param lastname Database column lastName SqlType(bpchar), Length(50,false)
 //    *  @param password Database column password SqlType(bpchar), Length(50,false)
 //    *  @param salt Database column salt SqlType(bpchar), Length(50,false)
-//    *  @param isadmin Database column isAdmin SqlType(bool)
+//    *  @param isAdmin Database column isAdmin SqlType(bool)
 //    *  @param email Database column email SqlType(bpchar), Length(50,false)
 //    *  @param disabled Database column disabled SqlType(bool) */
-//   case class UserRow(firstname: String, lastname: String, password: String, salt: String, isadmin: Boolean, email: String, disabled: Boolean)
+//   case class UserRow(firstname: String, lastname: String, password: String, salt: String, isAdmin: Boolean, email: String, disabled: Boolean)
 //   /** GetResult implicit for fetching UserRow objects using plain SQL queries */
 //   implicit def GetResultUserRow(implicit e0: GR[String], e1: GR[Boolean]): GR[UserRow] = GR{
 //     prs => import prs._
@@ -95,9 +95,9 @@
 //   }
 //   /** Table description of table User. Objects of this class serve as prototypes for rows in queries. */
 //   class User(_tableTag: Tag) extends profile.api.Table[UserRow](_tableTag, "User") {
-//     def * = (firstname, lastname, password, salt, isadmin, email, disabled) <> (UserRow.tupled, UserRow.unapply)
+//     def * = (firstname, lastname, password, salt, isAdmin, email, disabled) <> (UserRow.tupled, UserRow.unapply)
 //     /** Maps whole row to an option. Useful for outer joins. */
-//     def ? = (( Rep.Some(firstname), Rep.Some(lastname), Rep.Some(password), Rep.Some(salt), Rep.Some(isadmin), Rep.Some(email), Rep.Some(disabled))).shaped.<>({r=>import r._; _1.map(_=> UserRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+//     def ? = (( Rep.Some(firstname), Rep.Some(lastname), Rep.Some(password), Rep.Some(salt), Rep.Some(isAdmin), Rep.Some(email), Rep.Some(disabled))).shaped.<>({r=>import r._; _1.map(_=> UserRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
 //     /** Database column id SqlType(int4), PrimaryKey */
 //     // val id: Rep[Int] = column[Int]("id", O.PrimaryKey)
@@ -110,7 +110,7 @@
 //     /** Database column salt SqlType(bpchar), Length(50,false) */
 //     val salt: Rep[String] = column[String]("salt", O.Length(50,varying=false))
 //     /** Database column isAdmin SqlType(bool) */
-//     val isadmin: Rep[Boolean] = column[Boolean]("isAdmin")
+//     val isAdmin: Rep[Boolean] = column[Boolean]("isAdmin")
 //     /** Database column email SqlType(bpchar), Length(50,false) */
 //     val email: Rep[String] = column[String]("email", O.Length(50,varying=false))
 //     /** Database column disabled SqlType(bool) */
@@ -242,10 +242,10 @@ trait Tables {
    *  @param lastname Database column lastName SqlType(bpchar), Length(50,false)
    *  @param password Database column password SqlType(bpchar), Length(50,false)
    *  @param salt Database column salt SqlType(bpchar), Length(50,false)
-   *  @param isadmin Database column isAdmin SqlType(bool)
+   *  @param isAdmin Database column isAdmin SqlType(bool)
    *  @param email Database column email SqlType(bpchar), Length(50,false)
    *  @param disabled Database column disabled SqlType(bool) */
-  case class UserRow(id: Int, firstname: String, lastname: String, password: String, salt: String, isadmin: Boolean, email: String, disabled: Boolean)
+  case class UserRow(id: Int, firstname: String, lastname: String, password: String, salt: String, isAdmin: Boolean, email: String, disabled: Boolean)
   /** GetResult implicit for fetching UserRow objects using plain SQL queries */
   implicit def GetResultUserRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Boolean]): GR[UserRow] = GR{
     prs => import prs._
@@ -253,9 +253,9 @@ trait Tables {
   }
   /** Table description of table User. Objects of this class serve as prototypes for rows in queries. */
   class User(_tableTag: Tag) extends profile.api.Table[UserRow](_tableTag, "User") {
-    def * = (id, firstname, lastname, password, salt, isadmin, email, disabled) <> (UserRow.tupled, UserRow.unapply)
+    def * = (id, firstname, lastname, password, salt, isAdmin, email, disabled) <> (UserRow.tupled, UserRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(id), Rep.Some(firstname), Rep.Some(lastname), Rep.Some(password), Rep.Some(salt), Rep.Some(isadmin), Rep.Some(email), Rep.Some(disabled))).shaped.<>({r=>import r._; _1.map(_=> UserRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(id), Rep.Some(firstname), Rep.Some(lastname), Rep.Some(password), Rep.Some(salt), Rep.Some(isAdmin), Rep.Some(email), Rep.Some(disabled))).shaped.<>({r=>import r._; _1.map(_=> UserRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(int4), PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.PrimaryKey)
@@ -268,7 +268,7 @@ trait Tables {
     /** Database column salt SqlType(bpchar), Length(50,false) */
     val salt: Rep[String] = column[String]("salt", O.Length(50,varying=false))
     /** Database column isAdmin SqlType(bool) */
-    val isadmin: Rep[Boolean] = column[Boolean]("isAdmin")
+    val isAdmin: Rep[Boolean] = column[Boolean]("isAdmin")
     /** Database column email SqlType(bpchar), Length(50,false) */
     val email: Rep[String] = column[String]("email", O.Length(50,varying=false))
     /** Database column disabled SqlType(bool) */

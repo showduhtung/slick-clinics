@@ -36,10 +36,13 @@ class AuthController @Inject()(protected val dbConfigProvider: DatabaseConfigPro
       val loggedInUser = model.getUser(reqBody.email, reqBody.password)
 
       loggedInUser.flatMap { user =>
-        val newToken = session.generateToken(user.id, true)
+
+        println("@#$@#$@#$", user.id)
+        println(user.isAdmin)
+        val newToken = session.generateToken(user.id, user.isAdmin)
         newToken.flatMap { token => 
           Future{
-            Ok(Json.obj("accessToken"-> token, "isAdmin" -> user.isadmin))
+            Ok(Json.obj("accessToken"-> token, "isAdmin" -> user.isAdmin))
           }
         }
       }
