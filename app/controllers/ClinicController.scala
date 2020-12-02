@@ -59,7 +59,7 @@ class ClinicController @Inject()(protected val dbConfigProvider: DatabaseConfigP
               case Some(clinic) => 
                 // if (clinic.name == ccm.name) Conflict(Json.toJson("message" -> "Already exists"))
                 // else 
-                Created(Json.toJson("id"-> clinic.id, "name" -> clinic.name, "address" -> clinic.address))
+                Created(Json.obj("id"-> clinic.id, "name" -> clinic.name, "address" -> clinic.address))
                case  None => ServiceUnavailable(Json.toJson("message" -> "Something went wrong"))
             }
           }

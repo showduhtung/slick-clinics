@@ -43,10 +43,14 @@ export const createNewClinic = (
   newClinicData: ClinicData,
 ): ThunkAction<any, any, any, Action> => async (dispatch) => {
   try {
-    loadingClinic({ loading: true, status: 0 });
+    dispatch(loadingClinic({ loading: true, status: 0 }));
     const { data, status } = await postClinic(newClinicData);
+    console.log('clinic created', data, status);
+    if (data) {
+      dispatch(createClinic(data));
+      dispatch(loadingClinic({ loading: false, status: 0 }));
+    }
     if (status === 409) loadingClinic({ loading: false, status });
-    if (data) dispatch(createClinic(data));
   } catch (error) {
     const errorData = errorDataExtractor(error);
     console.error(errorData);

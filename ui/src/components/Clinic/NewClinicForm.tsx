@@ -76,13 +76,8 @@ export const NewClinicForm = ({ open, onClose, error }: NewClinicFormProps) => {
         { state: name, setState: setName, title: 'name' },
         { state: address, setState: setAddress, title: 'address' },
       ])
-    ) {
-      console.log('well done sir');
-      onClose({
-        name: name.value,
-        address: address.value,
-      });
-    } else console.log('HELLO FILL THEM OUT PLEASE');
+    )
+      onClose({ name: name.value, address: address.value });
   }
   return (
     <Dialog onClose={resetAndClose} aria-labelledby="simple-dialog-title" open={open}>

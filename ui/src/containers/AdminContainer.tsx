@@ -26,8 +26,13 @@ export const AdminContainer = () => {
 
   useEffect(() => {
     // if the modal is open, and it has finished loading and if there's an error message, display error message
+    console.log(formState, loading, status);
     if (formState && !loading && status === 0) setFormState(false);
   }, [loading]);
+
+  // useEffect(() => {
+  //   console.log(status, loading);
+  // }, [loading]);
 
   useEffect(() => {
     getSummary((summary: any) => console.log(summary));
@@ -44,9 +49,9 @@ export const AdminContainer = () => {
       <Container>
         <Header profile={{ name: 'Admin' }} logout={handleLogout} />
         {clinicData &&
-          clinicData.map((clinic: ClinicData) => (
+          clinicData.map((clinic: ClinicData, idx) => (
             <ClinicCard
-              key={clinic.name + clinic.address.split(' ')[0]}
+              key={clinic.name + clinic.address.split(' ')[0] + idx}
               name={clinic.name}
               address={clinic.address}
             />
