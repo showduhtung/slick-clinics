@@ -3,10 +3,11 @@ import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { authenticateLogin } from '../../apis';
 import { errorDataExtractor, setLocalStorageState } from '../../shared/utilities';
-import { AuthActionTypes, LOGIN } from '../types';
+import { AuthActionTypes, LOGIN, LOGOUT } from '../types';
 import history from '../../shared/history';
 
 export const login = (): AuthActionTypes => ({ type: LOGIN });
+export const logout = (): AuthActionTypes => ({ type: LOGOUT });
 
 export const onValidated = (): ThunkAction<any, any, any, Action> => (dispatch) => {
   dispatch(login());
@@ -21,7 +22,7 @@ export const checkCredentials = (
     try {
       const { accessToken } = (await authenticateLogin(email, password)).data;
       if (accessToken) {
-        axios.defaults.headers.common['authorization'] = accessToken;
+        axios.defaults.headers.common['Authorization'] = accessToken;
         setLocalStorageState('playclin_token', accessToken);
         dispatch(onValidated());
       }

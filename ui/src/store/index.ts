@@ -1,6 +1,6 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
-import { authReducer } from './reducers';
+import { authReducer, clinicReducer } from './reducers';
 
 declare global {
   interface Window {
@@ -8,7 +8,7 @@ declare global {
   }
 }
 
-const rootReducer = combineReducers({ auth: authReducer });
+const rootReducer = combineReducers({ auth: authReducer, clinic: clinicReducer });
 
 export type RootState = ReturnType<typeof rootReducer>;
 

@@ -5,15 +5,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -72,12 +65,6 @@ const useStyles = makeStyles((theme: Theme) =>
         display: 'flex',
       },
     },
-    sectionMobile: {
-      display: 'flex',
-      [theme.breakpoints.up('md')]: {
-        display: 'none',
-      },
-    },
   }),
 );
 
@@ -88,9 +75,10 @@ interface ProfileProps {
 interface HeaderProps {
   profile: ProfileProps;
   //   isAdmin: Boolean;
+  logout: () => void;
 }
 
-export const Header = ({ profile }: HeaderProps) => {
+export const Header = ({ profile, logout }: HeaderProps) => {
   const classes = useStyles();
 
   return (
@@ -114,6 +102,11 @@ export const Header = ({ profile }: HeaderProps) => {
             />
           </div>
           <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
+            <IconButton edge="end" onClick={logout} color="inherit">
+              <ExitToAppIcon />
+            </IconButton>
+          </div>
         </Toolbar>
       </AppBar>
     </div>

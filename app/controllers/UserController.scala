@@ -34,8 +34,8 @@ class UserController @Inject()(protected val dbConfigProvider: DatabaseConfigPro
             ud => model.createUser(ud.firstname, ud.lastname, ud.password, ud.email).map { id =>
                 id match {
                     case Some(id) =>
-                    Ok(Json.toJson(true))
-                    case None => Ok(Json.toJson(false))
+                    Created(Json.toJson("message" -> "User Created"))
+                    case None => NotFound(Json.toJson("message" -> "No user was found"))
                 }                
             }
         }

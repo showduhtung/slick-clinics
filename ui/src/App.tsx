@@ -6,9 +6,7 @@ import Home from './routes/home';
 import Auth from './routes/auth';
 import { PrivateRoute } from './components/shared';
 
-export interface IAppProps {}
-
-export default function IApp(props: IAppProps) {
+export default function IApp() {
   return (
     <Router history={history}>
       <Switch>

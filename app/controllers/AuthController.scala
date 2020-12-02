@@ -36,9 +36,6 @@ class AuthController @Inject()(protected val dbConfigProvider: DatabaseConfigPro
       val loggedInUser = model.getUser(reqBody.email, reqBody.password)
 
       loggedInUser.flatMap { user =>
-
-        println("@#$@#$@#$", user.id)
-        println(user.isAdmin)
         val newToken = session.generateToken(user.id, user.isAdmin)
         newToken.flatMap { token => 
           Future{
@@ -47,7 +44,6 @@ class AuthController @Inject()(protected val dbConfigProvider: DatabaseConfigPro
         }
       }
     }
-  
   }
 }
 

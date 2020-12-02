@@ -3,11 +3,8 @@ export interface HttpError {
   message: string;
 }
 
-export interface PasswordState {
-  value: string;
+export interface PasswordState extends FormState {
   visible: boolean;
-  valid: boolean;
-  message: string;
 }
 
 export interface EmailState {
@@ -22,4 +19,15 @@ export interface JWTDataType {
   exp: string;
   type: string;
   access: string;
+}
+
+export interface FormState {
+  value: string;
+  valid: boolean;
+  message: string;
+}
+
+export interface ClinicData {
+  name: string | null;
+  address: string | null;
 }

@@ -9,14 +9,7 @@ export function getSummary(cb) {
     .then(cb);
 }
 
-export async function getClinics(cb) {
-  const res = await axios.get('/api/clinics');
-  console.log(res.data);
-  checkStatus(res);
-  return res;
-}
-
-function checkStatus(response) {
+export function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) return response;
   const error = new Error(`HTTP Error ${response.statusText}`);
   error.status = response.statusText;

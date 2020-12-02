@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -12,7 +12,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,13 +37,36 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
+interface ClinicCardProps {
+  name: string;
+  address: string;
+}
 
-export const ClinicCard = () => {
+export const ClinicCard = ({ name, address }: ClinicCardProps) => {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const logo: (arg1: string, arg2: boolean) => string = (
+    name: string,
+    capital: boolean,
+  ) => {
+    const casedLetter: (arg: string) => string = (letter: string) =>
+      capital ? letter.toUpperCase() : letter.toLowerCase();
+    const words = name.split(' ');
+    switch (true) {
+      case words.length > 1:
+        return words.map((word: string) => casedLetter(word[0])).join('');
+      case name.length > 3:
+        return (
+          casedLetter(name[0]) + casedLetter(name[1]) + casedLetter(name[name.length - 1])
+        );
+      default:
+        return name;
+    }
   };
 
   return (
@@ -52,26 +74,19 @@ export const ClinicCard = () => {
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            UOA {/** props.logo */}
+            {logo(name, true)}
           </Avatar>
         }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title="Shrimp and Chorizo Paella" // props.name
+        title={name}
       />
       <CardMedia
         className={classes.media}
-        image="/src/assets/images/uoa_building.svg" // `/src/assets/images/${props.logo}_building.svg`
-        title="Paella dish"
+        image={`/src/assets/images/${logo(name, false)}_building.jpeg`}
+        title={name}
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          {/* props.description */}
-          This impressive paella is a perfect party dish and a fun meal to cook together
-          with your guests. Add 1 cup of frozen peas along with the mussels, if you like.
+          {address}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

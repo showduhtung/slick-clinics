@@ -28,19 +28,28 @@ class SessionRepository(db: Database)(implicit ec: ExecutionContext) {
     db.run(Session.filter(session => session.token === token).result.head)
   }
 
+  def checkAdminPrivilege(token: Option[String]): Boolean = {
+    val session = 
+      db.run(Session.filter(session => session.token === token).result.head)
+    val result = session.map(sr => sr.userId).flatMap{ userId => 
+      db.run(User.filter(userRow => userRow.id === userId).result.head).map { user => user.isAdmin}
+    }
+        
+    // hack to return Boolean
+    Await.result(result, scala.concurrent.duration.Duration(1, "seconds"))
+  }
+
   def checkTokenExpiration(token: Option[String]): Boolean = {
     val session = 
       db.run(Session.filter(session => session.token === token).result.head)
         .map(sessionRow => checkExpirationDate(sessionRow.expiration))
-
+        
     // hack to return Boolean
-    Await.result(session, scala.concurrent.duration.Duration(2, "seconds"))
+    Await.result(session, scala.concurrent.duration.Duration(1, "seconds"))
   }
 
   def generateToken(userId: Int, isAdmin: Boolean): Future[String] = {
-    println(isAdmin)
     val token = s"$userId-token-${UUID.randomUUID()}-$isAdmin"
-    println(token)
     val c = Calendar.getInstance()
     c.add(Calendar.DATE, 1)
     val expiration = new Date(c.getTimeInMillis())
