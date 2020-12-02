@@ -3,8 +3,9 @@ import path from 'path';
 import HtmlWebPackPlugin from 'html-webpack-plugin';
 
 const htmlPlugin = new HtmlWebPackPlugin({
-  template: './public/index.html',
+  template: path.resolve('public/index.html'),
   filename: './index.html',
+  inject: false,
 });
 
 const config: webpack.Configuration = {
@@ -14,7 +15,7 @@ const config: webpack.Configuration = {
     extensions: ['.ts', '.tsx', '.js', '.json'],
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.resolve('dist'),
     publicPath: '/',
     filename: 'bundle.[hash].js',
   },

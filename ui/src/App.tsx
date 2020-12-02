@@ -1,29 +1,21 @@
 import React, { useEffect, useState } from 'react';
-// import Auth from './routes/Auth';
-import { Router, Route, Switch } from 'react-router-dom';
-import { getClinics, getSummary } from './Client';
-import history from './history';
-// import { PrivateRoute } from './components/shared/PrivateRoute';
-// import Main from './routes/Main';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 
-export interface IAppProps {}
+import history from './shared/history';
+import Home from './routes/home';
+import Auth from './routes/auth';
+import { PrivateRoute } from './components/shared';
 
-export default function IApp(props: IAppProps) {
-  const [title, setTitle] = useState('');
-
-  useEffect(() => {
-    getClinics((clinics: any) => console.log(clinics));
-    getSummary((summary: any) => setTitle(summary.content));
-  }, []);
+export default function IApp() {
   return (
     <Router history={history}>
       <Switch>
-        {/* <Route path="/auth">
+        <Route path="/auth">
           <Auth />
         </Route>
-        <PrivateRoute path="/">
-          <Main />
-        </PrivateRoute> */}
+        <PrivateRoute redirection="/auth/login" condition={'token'} path="/">
+          <Home />
+        </PrivateRoute>
       </Switch>
     </Router>
   );
