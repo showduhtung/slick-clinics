@@ -38,7 +38,9 @@ class SessionRepository(db: Database)(implicit ec: ExecutionContext) {
   }
 
   def generateToken(userId: Int, isAdmin: Boolean): Future[String] = {
+    println(isAdmin)
     val token = s"$userId-token-${UUID.randomUUID()}-$isAdmin"
+    println(token)
     val c = Calendar.getInstance()
     c.add(Calendar.DATE, 1)
     val expiration = new Date(c.getTimeInMillis())
@@ -48,7 +50,7 @@ class SessionRepository(db: Database)(implicit ec: ExecutionContext) {
       val newId = sessions.length + 1
       db.run(Session += Tables.SessionRow(newId, token, userId, expiration))
         .flatMap { addCount =>
-          db.run(Session.filter(sesh => sesh.userid === userId).result)
+          db.run(Session.filter(sesh => sesh.token === token).result)
             .map(_.head.token)
         }
     }
