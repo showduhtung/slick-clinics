@@ -3,10 +3,11 @@ import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { authenticateLogin } from '../../apis';
 import { errorDataExtractor, setLocalStorageState } from '../../shared/utilities';
-import { AuthActionTypes, LOGIN } from '../types';
+import { AuthActionTypes, LOGIN, LOGOUT } from '../types';
 import history from '../../shared/history';
 
 export const login = (): AuthActionTypes => ({ type: LOGIN });
+export const logout = (): AuthActionTypes => ({ type: LOGOUT });
 
 export const onValidated = (): ThunkAction<any, any, any, Action> => (dispatch) => {
   dispatch(login());

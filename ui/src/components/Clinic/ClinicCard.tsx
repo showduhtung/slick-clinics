@@ -64,8 +64,8 @@ export const ClinicCard = () => {
       />
       <CardMedia
         className={classes.media}
-        image="/src/assets/images/uoa_building.svg" // `/src/assets/images/${props.logo}_building.svg`
-        title="Paella dish"
+        image="/src/assets/images/uoa_building.jpeg" // `/src/assets/images/${props.logo}_building.svg`
+        title="Paella dish" // props.name
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
