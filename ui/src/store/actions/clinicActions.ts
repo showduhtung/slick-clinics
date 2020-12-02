@@ -45,7 +45,6 @@ export const createNewClinic = (
   try {
     dispatch(loadingClinic({ loading: true, status: 0 }));
     const { data, status } = await postClinic(newClinicData);
-    console.log('clinic created', data, status);
     if (data) {
       dispatch(createClinic(data));
       dispatch(loadingClinic({ loading: false, status: 0 }));

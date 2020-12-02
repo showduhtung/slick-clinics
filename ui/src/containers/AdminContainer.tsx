@@ -18,10 +18,8 @@ export const AdminContainer = () => {
   );
   const [formState, setFormState] = useState(false);
 
-  const handleClose = (newClinicData: ClinicData) => {
-    console.log(newClinicData);
+  const dispatchNewClinic = (newClinicData: ClinicData) => {
     dispatch(createNewClinic(newClinicData));
-    // setOpen(false);
   };
 
   useEffect(() => {
@@ -29,10 +27,6 @@ export const AdminContainer = () => {
     console.log(formState, loading, status);
     if (formState && !loading && status === 0) setFormState(false);
   }, [loading]);
-
-  // useEffect(() => {
-  //   console.log(status, loading);
-  // }, [loading]);
 
   useEffect(() => {
     getSummary((summary: any) => console.log(summary));
@@ -65,7 +59,7 @@ export const AdminContainer = () => {
               name: null,
               address: null,
             },
-          ) => handleClose(newClinicData)}
+          ) => dispatchNewClinic(newClinicData)}
           error={status === 409 && { status: 409, message: 'Clinic already exists' }}
         />
       </Container>

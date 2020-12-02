@@ -54,7 +54,7 @@ class ClinicController @Inject()(protected val dbConfigProvider: DatabaseConfigP
       if (session.checkAdminPrivilege(token)) {
         withJsonBody[CreateClinicModel] { ccm =>
           model.createClinic(ccm.name, ccm.address).map { clinic =>
-            println(clinic)
+        
             clinic match {
               case Some(clinic) => 
                 // if (clinic.name == ccm.name) Conflict(Json.toJson("message" -> "Already exists"))

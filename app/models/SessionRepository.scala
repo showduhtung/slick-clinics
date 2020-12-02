@@ -21,7 +21,6 @@ class SessionRepository(db: Database)(implicit ec: ExecutionContext) {
 
   private def checkExpirationDate(date: Date): Boolean = {
     val today = new Date(calendar.getTimeInMillis())
-    println("#$%#@CHECKExpirationDate", date, today)
     date.after(today)
   }
 
