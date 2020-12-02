@@ -9,6 +9,7 @@ import { PrivateRoute } from './components/shared';
 export interface IAppProps {}
 
 export default function IApp(props: IAppProps) {
+  console.log('App render');
   return (
     <Router history={history}>
       <Switch>

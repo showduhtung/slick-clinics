@@ -36,8 +36,7 @@ class ClinicController @Inject()(protected val dbConfigProvider: DatabaseConfigP
   }
   
   def getClinics = Action.async { implicit request =>
-    val token = request.headers.get("authorization")
-    println("@#$@#$", token)
+    val token = request.headers.get("Authorization")
     if (session.checkTokenExpiration(token)) {
       val clinicList = model.getClinics()
       clinicList.map{
@@ -50,16 +49,18 @@ class ClinicController @Inject()(protected val dbConfigProvider: DatabaseConfigP
   implicit val readCreateClinic = Json.reads[CreateClinicModel]
 
   def createClinic = Action.async { implicit request =>
-    val token = request.headers.get("authorization")
+    val token = request.headers.get("Authorization")
     if (session.checkTokenExpiration(token) ) {
       if (session.checkAdminPrivilege(token)) {
         withJsonBody[CreateClinicModel] { ccm =>
           model.createClinic(ccm.name, ccm.address).map { clinic =>
+            println(clinic)
             clinic match {
               case Some(clinic) => 
-              if (clinic.name == ccm.name) Conflict("Already exists")
-              else Ok(Json.toJson("id"-> clinic.id, "name" -> clinic.name, "address" -> clinic.address))
-               case  None => Ok(Json.toJson(false))
+                // if (clinic.name == ccm.name) Conflict(Json.toJson("message" -> "Already exists"))
+                // else 
+                Created(Json.toJson("id"-> clinic.id, "name" -> clinic.name, "address" -> clinic.address))
+               case  None => ServiceUnavailable(Json.toJson("message" -> "Something went wrong"))
             }
           }
         }

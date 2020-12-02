@@ -4,6 +4,7 @@ import { PrivateRoute } from '../components/shared';
 import { PatientContainer, AdminContainer } from '../containers';
 
 const Home = () => {
+  console.log('I in home');
   return (
     <Switch>
       <Route path="/patient">

@@ -18,6 +18,8 @@ import { checkCredentials } from '../../store/actions';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
+import axios from 'axios';
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -65,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 export const Login = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('shaun.tung@gmail.com');
+  const [email, setEmail] = useState('ted.chen@gmail.com');
   const [password, setPassword] = useState('password');
 
   const { isTokenAvailable } = useSelector((state: RootState) => state.auth);
@@ -75,7 +77,12 @@ export const Login = () => {
     dispatch(checkCredentials(email, password));
   }
 
-  if (isTokenAvailable) return <Redirect to="/home" />;
+  async function handleClick() {
+    const res = await axios.post('/api/login', { email, password });
+    console.log(res);
+  }
+
+  if (isTokenAvailable) return <Redirect to="/" />;
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -142,6 +149,7 @@ export const Login = () => {
               <Copyright />
             </Box>
           </form>
+          <Button onClick={() => handleClick()}>Click Me</Button>
         </div>
       </Grid>
     </Grid>

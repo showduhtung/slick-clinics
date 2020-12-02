@@ -21,8 +21,9 @@ export const checkCredentials = (
   return async (dispatch) => {
     try {
       const { accessToken } = (await authenticateLogin(email, password)).data;
+      console.log('checkCredentials', accessToken);
       if (accessToken) {
-        axios.defaults.headers.common['authorization'] = accessToken;
+        axios.defaults.headers.common['Authorization'] = accessToken;
         setLocalStorageState('playclin_token', accessToken);
         dispatch(onValidated());
       }

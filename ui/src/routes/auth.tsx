@@ -5,6 +5,7 @@ import { Login } from '../components/Auth';
 // import { AuthEmail } from '../../components/shared';
 
 const Auth = () => {
+  console.log("I'm in Auth");
   const { path } = useRouteMatch();
   return (
     <Switch>

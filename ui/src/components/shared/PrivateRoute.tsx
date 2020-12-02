@@ -11,7 +11,7 @@ const validateUser = (condition: string): boolean => {
 };
 
 export const PrivateRoute = ({ children, redirection, condition, ...rest }: any) => {
-  console.log("Checking if you're allowed in here");
+  console.log("Checking if you're allowed in here", redirection);
   const { isTokenAvailable } = useSelector((state: RootState) => state.auth);
   const validation = validateUser(condition);
 

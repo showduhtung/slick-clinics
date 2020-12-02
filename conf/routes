@@ -11,10 +11,10 @@ POST    /api/login                  controllers.AuthController.login
 GET     /api/summary                controllers.ClinicController.appSummary
 GET     /api/clinics                controllers.ClinicController.getClinics
 +nocsrf
-POST     /api/clinics                controllers.ClinicController.createClinic
+POST    /api/clinics                controllers.ClinicController.createClinic
 POST    /api/user                   controllers.UserController.createUser
 
 # Serve static assets under public directory
 GET     /*file                      controllers.FrontendController.assetOrDefault(file)
 
-GET    /error             controllers.Default.error
+GET     /error             controllers.Default.error

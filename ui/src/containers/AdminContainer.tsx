@@ -8,6 +8,7 @@ import { removeLocalStorageState } from '../shared/utilities';
 import { bootstrapClinics, createNewClinic, logout } from '../store/actions';
 import { ClinicData } from '../shared/types';
 import { RootState } from '../store';
+import { getSummary } from '../apis/Client';
 
 export const AdminContainer = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ export const AdminContainer = () => {
   }, [loading]);
 
   useEffect(() => {
+    getSummary((summary: any) => console.log(summary));
     dispatch(bootstrapClinics());
   }, []);
 
