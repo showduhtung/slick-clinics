@@ -12,13 +12,7 @@ const Home = () => {
       <PrivateRoute path="/admin" redirection="/patient" condition={'isAdmin'}>
         <AdminContainer />
       </PrivateRoute>
-      <Route
-        path="/"
-        component={() => {
-          console.log("I dunno if I'm an admin or patient");
-          return <Redirect to={'/admin'} />;
-        }}
-      />
+      <Route path="/" component={() => <Redirect to={'/admin'} />} />
     </Switch>
   );
 };

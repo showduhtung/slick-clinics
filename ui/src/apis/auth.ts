@@ -1,8 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
-import { getLocalStorageState, setLocalStorageState } from '../shared/utilities';
+import { getToken, setLocalStorageState } from '../shared/utilities';
 
-const token = getLocalStorageState('playclin_token');
-axios.defaults.headers.common['authorization'] = token;
+const token = getToken();
 
 export const authenticateLogin = async (
   email: string,

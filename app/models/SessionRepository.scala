@@ -21,6 +21,7 @@ class SessionRepository(db: Database)(implicit ec: ExecutionContext) {
 
   private def checkExpirationDate(date: Date): Boolean = {
     val today = new Date(calendar.getTimeInMillis())
+    println("#$%#@", date, today)
     date.after(today)
   }
 
@@ -32,9 +33,9 @@ class SessionRepository(db: Database)(implicit ec: ExecutionContext) {
     val session = 
       db.run(Session.filter(session => session.token === token).result.head)
         .map(sessionRow => checkExpirationDate(sessionRow.expiration))
-
+        
     // hack to return Boolean
-    Await.result(session, scala.concurrent.duration.Duration(2, "seconds"))
+    Await.result(session, scala.concurrent.duration.Duration(5, "seconds"))
   }
 
   def generateToken(userId: Int, isAdmin: Boolean): Future[String] = {

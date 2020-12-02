@@ -26,3 +26,8 @@ export interface FormState {
   valid: boolean;
   message: string;
 }
+
+export interface ClinicData {
+  name: string | null;
+  address: string | null;
+}

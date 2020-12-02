@@ -3,14 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import PersonIcon from '@material-ui/icons/Person';
-import AddIcon from '@material-ui/icons/Add';
-import Typography from '@material-ui/core/Typography';
-import { blue } from '@material-ui/core/colors';
-import { TextField } from '@material-ui/core';
 
 import { CustomTextField } from '../shared';
-import { FormState } from '../../shared/types';
+import { FormState, ClinicData } from '../../shared/types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,14 +26,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface NewClinicData {
-  name: string | null;
-  description: string | null;
-  address: string | null;
-}
 interface NewClinicFormProps {
   open: boolean;
-  onClose: (data?: NewClinicData) => void;
+  onClose: (data?: ClinicData) => void;
 }
 
 interface FormValueValidatingProps {
@@ -47,17 +37,9 @@ interface FormValueValidatingProps {
   title: string;
 }
 
-const emptyFormValues: NewClinicData = { name: null, description: null, address: null };
-
 export const NewClinicForm = ({ open, onClose }: NewClinicFormProps) => {
   const classes = useStyles();
   const [name, setName] = useState<FormState>({
-    value: '',
-    valid: true,
-    message: null,
-  });
-
-  const [description, setDescription] = useState<FormState>({
     value: '',
     valid: true,
     message: null,
@@ -72,19 +54,16 @@ export const NewClinicForm = ({ open, onClose }: NewClinicFormProps) => {
     formValues.filter((el) => {
       const { state, setState, title } = el;
       const valid = el.state.value.length !== 0;
-      if (!valid) {
-        console.log('fill out: ', title);
+      if (!valid)
         setState({ ...state, valid: false, message: `Please enter a valid ${title}` });
-      } else {
-        setState({ ...state, valid: true, message: '' });
-        console.log(state.value);
-      }
+      else setState({ ...state, valid: true, message: '' });
+
       return !valid;
     }).length === 0;
 
   function resetAndClose() {
     setName({ value: '', valid: true, message: null });
-    setDescription({ value: '', valid: true, message: null });
+
     setAddress({ value: '', valid: true, message: null });
     onClose();
   }
@@ -93,30 +72,15 @@ export const NewClinicForm = ({ open, onClose }: NewClinicFormProps) => {
     if (
       _isFilledOut([
         { state: name, setState: setName, title: 'name' },
-        { state: description, setState: setDescription, title: 'description' },
         { state: address, setState: setAddress, title: 'address' },
       ])
     ) {
       console.log('well done sir');
       onClose({
         name: name.value,
-        description: description.value,
         address: address.value,
       });
-    } else {
-      console.log('HELLO FILL THEM OUT PLEASE');
-    }
-
-    // if (isFilledOut([name.value, logo.value, description.value, address.value])) {
-    //   // if form isn't done, invalidate
-    //   // if clinic exists, fail
-
-    //   // dispatch(checkCredentials(email, password));
-    //   // onClose();
-    // } else {
-    //     console.log('HELLO FILL THEM OUT PLEASE');
-
-    // }
+    } else console.log('HELLO FILL THEM OUT PLEASE');
   }
   return (
     <Dialog onClose={resetAndClose} aria-labelledby="simple-dialog-title" open={open}>
@@ -128,12 +92,6 @@ export const NewClinicForm = ({ open, onClose }: NewClinicFormProps) => {
           state={name}
           title="name"
           onChange={setName}
-        />
-        <CustomTextField
-          size="big"
-          state={description}
-          title="description"
-          onChange={setDescription}
         />
         <CustomTextField
           size="big"

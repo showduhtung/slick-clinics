@@ -24,13 +24,14 @@ class ClinicController @Inject()(protected val dbConfigProvider: DatabaseConfigP
   
   def getClinics = Action.async { implicit request =>
     val token = request.headers.get("authorization")
+    println("@#$@#$", token)
     if (session.checkTokenExpiration(token)) {
       val clinicList = model.getClinics()
       clinicList.map{
         clinics => Ok(JsArray(clinics.map(clinic => Json.obj("id" -> clinic.id, "name" -> clinic.name, "address" -> clinic.address))))
       } 
     }
-    else Future(NotFound("no token available"))
+    else Future(Unauthorized("No session available"))
 
   }
 }

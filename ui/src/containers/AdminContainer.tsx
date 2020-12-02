@@ -1,32 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Container } from '@material-ui/core';
 
-import { getClinics, getSummary } from '../apis/Client';
 import { ClinicCard, NewClinicForm } from '../components/Clinic';
 import { Header } from '../components/shared';
 import { removeLocalStorageState } from '../shared/utilities';
-import { logout } from '../store/actions';
-
-interface NewClinicData {
-  name: string | null;
-  description: string | null;
-  address: string | null;
-}
+import { bootstrapClinics, logout } from '../store/actions';
+import { ClinicData } from '../shared/types';
+import { RootState } from '../store';
 
 export const AdminContainer = () => {
   const dispatch = useDispatch();
+
+  const { data: clinicData } = useSelector((state: RootState) => state.clinic);
   const [open, setOpen] = useState(false);
 
-  const handleClose = (newClinicData: NewClinicData) => {
-    console.log(newClinicData);
+  const handleClose = (newClinicData: ClinicData) => {
     // dispatch(createNewClinic(newClinicData));
     setOpen(false);
   };
 
   useEffect(() => {
-    getClinics();
-    getSummary((summary: any) => console.log(summary));
+    dispatch(bootstrapClinics());
   }, []);
 
   const handleLogout = () => {
@@ -38,14 +33,17 @@ export const AdminContainer = () => {
     <>
       <Container>
         <Header profile={{ name: 'Admin' }} logout={handleLogout} />
-        <ClinicCard />
+        {clinicData &&
+          clinicData.map((clinic: ClinicData) => (
+            <ClinicCard name={clinic.name} address={clinic.address} />
+          ))}
+
         <Button onClick={() => setOpen(true)}>Create a new clinic</Button>
         <NewClinicForm
           open={open}
           onClose={(
-            newClinicData: NewClinicData = {
+            newClinicData: ClinicData = {
               name: null,
-              description: null,
               address: null,
             },
           ) => handleClose(newClinicData)}
