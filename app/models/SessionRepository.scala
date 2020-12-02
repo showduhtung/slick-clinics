@@ -29,6 +29,17 @@ class SessionRepository(db: Database)(implicit ec: ExecutionContext) {
     db.run(Session.filter(session => session.token === token).result.head)
   }
 
+  def checkAdminPrivilege(token: Option[String]): Boolean = {
+    val session = 
+      db.run(Session.filter(session => session.token === token).result.head)
+    val result = session.map(sr => sr.userId).flatMap{ userId => 
+      db.run(User.filter(userRow => userRow.id === userId).result.head).map { user => user.isAdmin}
+    }
+        
+    // hack to return Boolean
+    Await.result(result, scala.concurrent.duration.Duration(5, "seconds"))
+  }
+
   def checkTokenExpiration(token: Option[String]): Boolean = {
     val session = 
       db.run(Session.filter(session => session.token === token).result.head)

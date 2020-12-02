@@ -5,7 +5,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 
 import { CustomTextField } from '../shared';
-import { FormState, ClinicData } from '../../shared/types';
+import { FormState, ClinicData, HttpError } from '../../shared/types';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 interface NewClinicFormProps {
   open: boolean;
   onClose: (data?: ClinicData) => void;
+  error: HttpError;
 }
 
 interface FormValueValidatingProps {
@@ -37,15 +39,15 @@ interface FormValueValidatingProps {
   title: string;
 }
 
-export const NewClinicForm = ({ open, onClose }: NewClinicFormProps) => {
+export const NewClinicForm = ({ open, onClose, error }: NewClinicFormProps) => {
   const classes = useStyles();
   const [name, setName] = useState<FormState>({
-    value: '',
+    value: 'Another Clinic',
     valid: true,
     message: null,
   });
   const [address, setAddress] = useState<FormState>({
-    value: '',
+    value: '335 Amwell Road, Hillsborough NJ 08844',
     valid: true,
     message: null,
   });
@@ -85,6 +87,9 @@ export const NewClinicForm = ({ open, onClose }: NewClinicFormProps) => {
   return (
     <Dialog onClose={resetAndClose} aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">Create a new clinic</DialogTitle>
+      {error && (
+        <Typography color="error">{`${error?.status}: ${error?.message}`}</Typography>
+      )}
       <form className={classes.form} noValidate onSubmit={handleSubmit}>
         <CustomTextField
           size="small"

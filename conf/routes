@@ -10,6 +10,8 @@ GET     /                           controllers.FrontendController.index
 POST    /api/login                  controllers.AuthController.login
 GET     /api/summary                controllers.ClinicController.appSummary
 GET     /api/clinics                controllers.ClinicController.getClinics
++nocsrf
+POST     /api/clinics                controllers.ClinicController.createClinic
 POST    /api/user                   controllers.UserController.createUser
 
 # Serve static assets under public directory
