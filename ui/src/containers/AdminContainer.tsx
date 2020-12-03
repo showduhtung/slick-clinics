@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Container } from '@material-ui/core';
 
-import { ClinicCard, NewClinicForm } from '../components/Clinic';
+import { ClinicBookings, ClinicCard, NewClinicForm } from '../components/Clinic';
 import { BookingList } from '../components/Booking';
 import { Header } from '../components/shared';
 import { checkIsAdmin, removeToken } from '../shared/utilities';
@@ -95,7 +95,11 @@ export const AdminContainer = () => {
                   expanded={activeCard}
                   expandChild={(id) => setActiveCard(id)}
                 >
-                  <div>Admin</div>
+                  <ClinicBookings
+                    clinic={clinic}
+                    bookingData={bookingData}
+                    userData={userData}
+                  />
                 </ClinicCard>
               </div>
             ))}
