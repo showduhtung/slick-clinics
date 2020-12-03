@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container } from '@material-ui/core';
 
-import { Booking, BookingModal } from '../components/Booking';
+import { Booking, BookingList, BookingModal } from '../components/Booking';
 import { Header } from '../components/shared';
-import { removeLocalStorageState } from '../shared/utilities';
+import { getUserIdFromToken, removeLocalStorageState } from '../shared/utilities';
 import { bootstrapClinics, logout } from '../store/actions';
 import { RootState } from '../store';
 import { ClinicData } from '../shared/types';
@@ -14,9 +14,15 @@ import { bootstrapBookings } from '../store/actions/bookingActions';
 export const PatientContainer = () => {
   const dispatch = useDispatch();
 
-  const { data: clinicData, loading, status } = useSelector(
+  const { data: clinicData, loading: loadingClinics, status: clinicStatus } = useSelector(
     (state: RootState) => state.clinic,
   );
+
+  const {
+    data: bookingData,
+    loading: loadingBookings,
+    status: bookingStatus,
+  } = useSelector((state: RootState) => state.booking);
 
   // for simplicity sake, we will only allow one accordion open at a time
   const [activeCard, setActiveCard] = useState(-1);
@@ -37,12 +43,12 @@ export const PatientContainer = () => {
 
   useEffect(() => {
     dispatch(bootstrapClinics());
-    dispatch(bootstrapBookings());
+    dispatch(bootstrapBookings(parseInt(getUserIdFromToken(), 10)));
   }, []);
 
   useEffect(() => {
-    console.log(selectedDate);
-  }, [selectedDate]);
+    console.log(bookingData);
+  }, [bookingData]);
 
   return (
     <>
@@ -75,6 +81,7 @@ export const PatientContainer = () => {
               );
             })}
         </div>
+        <BookingList data={bookingData} clinicData={clinicData} />
       </Container>
     </>
   );

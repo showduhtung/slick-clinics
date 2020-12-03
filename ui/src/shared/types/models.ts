@@ -33,8 +33,9 @@ export interface ClinicData {
 }
 
 export interface BookingData {
-  name: string | null;
-  address: string | null;
+  id: number | null;
+  clinicId: number | null;
+  time: number | null;
 }
 
 export interface LoadingPayload {

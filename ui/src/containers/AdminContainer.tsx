@@ -9,6 +9,7 @@ import { bootstrapClinics, createNewClinic, logout } from '../store/actions';
 import { ClinicData } from '../shared/types';
 import { RootState } from '../store';
 import { getSummary } from '../apis/Client';
+import { Redirect } from 'react-router-dom';
 
 export const AdminContainer = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ export const AdminContainer = () => {
   const handleLogout = () => {
     removeLocalStorageState('playclin_token');
     dispatch(logout());
+    // return <Redirect to={'/auth/login'} />;
   };
 
   return (

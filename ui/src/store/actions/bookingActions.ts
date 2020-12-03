@@ -26,11 +26,12 @@ export const loadingBooking = (payload: LoadingPayload): BookingActionTypes => (
   payload,
 });
 
-export const bootstrapBookings = (): ThunkAction<any, any, any, Action> => async (
-  dispatch,
-) => {
+export const bootstrapBookings = (
+  userId: number,
+): ThunkAction<any, any, any, Action> => async (dispatch) => {
   try {
-    const { data } = await getBookings();
+    const { data } = await getBookings(userId);
+    console.log('bootstrapping bookings', userId, data);
     dispatch(getBooking(data));
   } catch (error) {
     const errorData = errorDataExtractor(error);

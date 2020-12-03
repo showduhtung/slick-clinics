@@ -8,7 +8,7 @@ import {
 
 const initialState: BookingState = { data: [], loading: false, status: 0 };
 
-export const BOOKINGReducer = (
+export const bookingReducer = (
   state = initialState,
   action: BookingActionTypes,
 ): BookingState => {

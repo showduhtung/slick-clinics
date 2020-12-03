@@ -10,7 +10,7 @@ import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
+import { red, blue } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
       transform: 'rotate(180deg)',
     },
     avatar: {
-      backgroundColor: red[500],
+      backgroundColor: blue[500],
     },
   }),
 );
@@ -95,6 +95,7 @@ export const ClinicCard = ({
       <CardMedia
         className={classes.media}
         image={`/src/assets/images/${logo(name, false)}_building.jpeg`}
+        // image="https://source.unsplash.com/random"
         title={name}
       />
       <CardContent style={{ height: '10px' }}>

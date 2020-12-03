@@ -67,8 +67,8 @@ const useStyles = makeStyles((theme) => ({
 export const Login = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('shaun.tung@gmail.com');
-  // const [email, setEmail] = useState('ted.chen@gmail.com');
+  // const [email, setEmail] = useState('shaun.tung@gmail.com');
+  const [email, setEmail] = useState('ted.chen@gmail.com');
   const [password, setPassword] = useState('password');
 
   const { isTokenAvailable } = useSelector((state: RootState) => state.auth);

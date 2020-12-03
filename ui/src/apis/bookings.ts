@@ -6,8 +6,8 @@ import { checkStatus } from './Client';
 const token = getToken();
 axios.defaults.headers.common['Authorization'] = token;
 
-export const getBookings = async () => {
-  const res = await axios.get('/api/bookings');
+export const getBookings = async (userId: number) => {
+  const res = await axios.get(`/api/bookings/${userId}/userId`);
   checkStatus(res);
   return res;
 };
