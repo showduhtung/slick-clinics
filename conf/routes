@@ -18,7 +18,7 @@ GET     /api/bookings/:userId/userId        controllers.BookingController.getBoo
 # GET     /api/bookings/:clinicId/clinicId    controllers.BookingController.getBookingsByClinic(clinicId: Int)
 
 +nocsrf
-#POST    /api/bookings                   controllers.BookingController.createBooking
+POST    /api/bookings                   controllers.BookingController.createBooking
 
 # Serve static assets under public directory
 GET     /*file                          controllers.FrontendController.assetOrDefault(file)

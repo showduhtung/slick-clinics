@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { postBooking, getBookings } from '../../apis/bookings';
@@ -47,7 +46,6 @@ export const createNewBooking = (
   newBookingPayload: NewBookingPayload,
 ): ThunkAction<any, any, any, Action> => async (dispatch) => {
   try {
-    console.log(newBookingPayload);
     dispatch(loadingBooking({ loading: true, status: { code: 0, message: '' } }));
     const { data, status, statusText } = await postBooking(newBookingPayload);
     if (data) {
@@ -60,7 +58,6 @@ export const createNewBooking = (
         status: { code: 409, message: 'Booking already exists' },
       });
     if (status > 0) {
-      console.log(status);
       loadingBooking({ loading: false, status: { code: status, message: statusText } });
     }
   } catch (error) {

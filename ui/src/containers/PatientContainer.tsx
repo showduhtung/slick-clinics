@@ -4,12 +4,7 @@ import { Container } from '@material-ui/core';
 
 import { BookingCalendar, BookingList, BookingModal } from '../components/Booking';
 import { Header } from '../components/shared';
-import {
-  getStrungDate,
-  getUserIdFromToken,
-  removeLocalStorageState,
-  removeToken,
-} from '../shared/utilities';
+import { getStrungDate, getUserIdFromToken, removeToken } from '../shared/utilities';
 import { bootstrapClinics, logout } from '../store/actions';
 import { RootState } from '../store';
 import { ClinicData } from '../shared/types';
@@ -37,15 +32,22 @@ export const PatientContainer = () => {
   };
 
   const handleNewBookings = (time: string) => {
-    console.log(time, selectedDate);
-    dispatch(createNewBooking({ time, date: selectedDate }));
+    dispatch(
+      createNewBooking({
+        time,
+        date: selectedDate,
+        clinicId: activeCard + 1,
+        userId: getUserIdFromToken(),
+      }),
+    );
     // reset
+    setActiveCard(-1);
     setSelectedDate(getStrungDate(new Date()));
   };
 
   useEffect(() => {
     dispatch(bootstrapClinics());
-    dispatch(bootstrapBookings(parseInt(getUserIdFromToken(), 10)));
+    dispatch(bootstrapBookings(getUserIdFromToken()));
   }, []);
 
   useEffect(() => {

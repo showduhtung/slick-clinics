@@ -13,7 +13,8 @@ export const getToken: () => string | undefined = () =>
 
 export const getSplitToken = () => getToken()?.split('-');
 
-export const getUserIdFromToken = () => getSplitToken()[0];
+export const getUserIdFromToken: () => number | null = () =>
+  getSplitToken && parseInt(getSplitToken()[0], 10);
 
 export const setLocalStorageState = (type: string, newState: object) =>
   localStorage.setItem(`${type}_state`, JSON.stringify(newState));
@@ -42,6 +43,12 @@ export const getStrungDate = (date: Date): string =>
   contrivedDateString(date.getMonth() + 1) +
   '-' +
   contrivedDateString(date.getDate() + 1);
+
+export const dataReadyStrungDate = (date: string) => {
+  let splitDate = date.split('-');
+  let newDate = [splitDate[0], splitDate[1], (parseInt(splitDate[2], 10) - 1).toString()];
+  return newDate.join('-');
+};
 
 const contrivedDateString = (num: number): string =>
   num < 10 ? `0${num.toString()}` : num.toString();

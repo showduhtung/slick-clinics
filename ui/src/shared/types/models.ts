@@ -35,6 +35,8 @@ export interface ClinicData {
 export interface NewBookingPayload {
   time: string;
   date: string;
+  clinicId: number;
+  userId: number;
 }
 export interface BookingData {
   id: number;
