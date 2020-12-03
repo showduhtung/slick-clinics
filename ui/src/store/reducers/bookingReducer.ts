@@ -6,7 +6,11 @@ import {
   GET_BOOKING,
 } from '../types';
 
-const initialState: BookingState = { data: [], loading: false, status: 0 };
+const initialState: BookingState = {
+  data: [],
+  loading: false,
+  status: { code: 0, message: '' },
+};
 
 export const bookingReducer = (
   state = initialState,

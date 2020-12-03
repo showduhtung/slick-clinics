@@ -1,4 +1,4 @@
-import { ClinicData, LoadingPayload } from '../../shared/types';
+import { ClinicData, HttpError, LoadingPayload } from '../../shared/types';
 
 /** Action Types */
 export const GET_CLINIC = 'GET_CLINIC';
@@ -29,5 +29,5 @@ export type ClinicActionTypes =
 export interface ClinicState {
   data: ClinicData[];
   loading: boolean;
-  status: number;
+  status: HttpError;
 }

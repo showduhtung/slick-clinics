@@ -2,43 +2,45 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container } from '@material-ui/core';
 
-import { Booking, BookingList, BookingModal } from '../components/Booking';
+import { BookingCalendar, BookingList, BookingModal } from '../components/Booking';
 import { Header } from '../components/shared';
-import { getUserIdFromToken, removeLocalStorageState } from '../shared/utilities';
+import {
+  getStrungDate,
+  getUserIdFromToken,
+  removeLocalStorageState,
+  removeToken,
+} from '../shared/utilities';
 import { bootstrapClinics, logout } from '../store/actions';
 import { RootState } from '../store';
 import { ClinicData } from '../shared/types';
 import { ClinicCard } from '../components/Clinic';
-import { bootstrapBookings } from '../store/actions/bookingActions';
+import { bootstrapBookings, createNewBooking } from '../store/actions/bookingActions';
 
 export const PatientContainer = () => {
   const dispatch = useDispatch();
 
-  const { data: clinicData, loading: loadingClinics, status: clinicStatus } = useSelector(
-    (state: RootState) => state.clinic,
-  );
-
+  const { data: clinicData } = useSelector((state: RootState) => state.clinic);
   const {
     data: bookingData,
-    loading: loadingBookings,
+    loading: bookingLoading,
     status: bookingStatus,
   } = useSelector((state: RootState) => state.booking);
 
   // for simplicity sake, we will only allow one accordion open at a time
   const [activeCard, setActiveCard] = useState(-1);
-  const [modalState, setModalState] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
-  // const error = useSelector()
+  const [selectedDate, setSelectedDate] = useState<string>(getStrungDate(new Date()));
+  const [modalError, setModalError] = useState<string>('');
 
   const handleLogout = () => {
-    removeLocalStorageState('playclin_token');
     dispatch(logout());
+    removeToken();
   };
 
-  const handleNewBookings = () => {
-    // dispatch
-    setModalState(false);
+  const handleNewBookings = (time: string) => {
+    console.log(time, selectedDate);
+    dispatch(createNewBooking({ time, date: selectedDate }));
+    // reset
+    setSelectedDate(getStrungDate(new Date()));
   };
 
   useEffect(() => {
@@ -47,8 +49,17 @@ export const PatientContainer = () => {
   }, []);
 
   useEffect(() => {
-    console.log(bookingData);
-  }, [bookingData]);
+    if (!bookingLoading) {
+      if (bookingStatus.code < 300 && selectedDate !== getStrungDate(new Date()))
+        if (bookingStatus.code > 299) {
+          if (selectedDate !== getStrungDate(new Date())) {
+            setModalError(status);
+          } else {
+            setSelectedDate(getStrungDate(new Date()));
+          }
+        }
+    }
+  }, [bookingStatus, bookingLoading]);
 
   return (
     <>
@@ -73,8 +84,11 @@ export const PatientContainer = () => {
                     expandChild={(id) => setActiveCard(id)}
                   >
                     <>
-                      <Booking setDate={setSelectedDate} />
-                      <BookingModal open={modalState} onClose={handleNewBookings} />
+                      <BookingCalendar date={selectedDate} setDate={setSelectedDate} />
+                      <BookingModal
+                        open={selectedDate !== getStrungDate(new Date())}
+                        onClose={handleNewBookings}
+                      />
                     </>
                   </ClinicCard>
                 </div>

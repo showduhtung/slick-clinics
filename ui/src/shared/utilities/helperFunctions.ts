@@ -4,7 +4,7 @@ import { AxiosResponse } from 'axios';
 export function errorDataExtractor(error: any): HttpError {
   return {
     message: error.response?.data?.message,
-    status: error.response?.status,
+    code: error.response?.status,
   };
 }
 
@@ -32,3 +32,20 @@ export const checkStatus = (response: AxiosResponse) => {
   console.log(error);
   throw error;
 };
+
+export const getStringDate = (date: Date): string =>
+  `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
+
+export const getStrungDate = (date: Date): string =>
+  contrivedDateString(date.getFullYear()) +
+  '-' +
+  contrivedDateString(date.getMonth() + 1) +
+  '-' +
+  contrivedDateString(date.getDate() + 1);
+
+const contrivedDateString = (num: number): string =>
+  num < 10 ? `0${num.toString()}` : num.toString();
+
+export function removeToken() {
+  removeLocalStorageState('playclin_token');
+}

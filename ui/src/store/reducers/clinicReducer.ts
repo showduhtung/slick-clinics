@@ -6,7 +6,11 @@ import {
   GET_CLINIC,
 } from '../types';
 
-const initialState: ClinicState = { data: [], loading: false, status: 0 };
+const initialState: ClinicState = {
+  data: [],
+  loading: false,
+  status: { code: 0, message: '' },
+};
 
 export const clinicReducer = (
   state = initialState,

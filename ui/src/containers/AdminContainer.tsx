@@ -8,8 +8,6 @@ import { removeLocalStorageState } from '../shared/utilities';
 import { bootstrapClinics, createNewClinic, logout } from '../store/actions';
 import { ClinicData } from '../shared/types';
 import { RootState } from '../store';
-import { getSummary } from '../apis/Client';
-import { Redirect } from 'react-router-dom';
 
 export const AdminContainer = () => {
   const dispatch = useDispatch();
@@ -26,19 +24,17 @@ export const AdminContainer = () => {
 
   useEffect(() => {
     // if the modal is open, and it has finished loading and if there's an error message, display error message
-    console.log(formState, loading, status);
-    if (formState && !loading && status === 0) setFormState(false);
+    if (formState && !loading && status.code === 0) setFormState(false);
   }, [loading]);
 
   useEffect(() => {
-    getSummary((summary: any) => console.log(summary));
     dispatch(bootstrapClinics());
   }, []);
 
   const handleLogout = () => {
     removeLocalStorageState('playclin_token');
     dispatch(logout());
-    // return <Redirect to={'/auth/login'} />;
+    // return <Redirect to={'/auth/login'} />;a
   };
 
   return (
@@ -79,7 +75,7 @@ export const AdminContainer = () => {
               address: null,
             },
           ) => dispatchNewClinic(newClinicData)}
-          error={status === 409 && { status: 409, message: 'Clinic already exists' }}
+          error={status.code === 409 && { code: status.code, message: status.message }}
         />
       </Container>
     </>

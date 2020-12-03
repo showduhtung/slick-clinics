@@ -1,4 +1,4 @@
-import { BookingData, LoadingPayload } from '../../shared/types';
+import { BookingData, HttpError, LoadingPayload } from '../../shared/types';
 
 /** Action Types */
 export const GET_BOOKING = 'GET_BOOKING';
@@ -29,5 +29,5 @@ export type BookingActionTypes =
 export interface BookingState {
   data: BookingData[];
   loading: boolean;
-  status: number;
+  status: HttpError;
 }

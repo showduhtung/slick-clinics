@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BookingData } from '../shared/types';
+import { NewBookingPayload } from '../shared/types';
 import { getToken } from '../shared/utilities';
 import { checkStatus } from './Client';
 
@@ -12,7 +12,7 @@ export const getBookings = async (userId: number) => {
   return res;
 };
 
-export const postBooking = async (data: BookingData) => {
+export const postBooking = async (data: NewBookingPayload) => {
   const res = await axios.post('/api/bookings', data);
   checkStatus(res);
   return res;

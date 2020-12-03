@@ -2,7 +2,12 @@ import axios from 'axios';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { postBooking, getBookings } from '../../apis/bookings';
-import { BookingData, LoadingPayload } from '../../shared/types';
+import {
+  BookingData,
+  HttpError,
+  LoadingPayload,
+  NewBookingPayload,
+} from '../../shared/types';
 import { errorDataExtractor } from '../../shared/utilities';
 import {
   BookingActionTypes,
@@ -31,7 +36,6 @@ export const bootstrapBookings = (
 ): ThunkAction<any, any, any, Action> => async (dispatch) => {
   try {
     const { data } = await getBookings(userId);
-    console.log('bootstrapping bookings', userId, data);
     dispatch(getBooking(data));
   } catch (error) {
     const errorData = errorDataExtractor(error);
@@ -40,18 +44,33 @@ export const bootstrapBookings = (
 };
 
 export const createNewBooking = (
-  newBookingData: BookingData,
+  newBookingPayload: NewBookingPayload,
 ): ThunkAction<any, any, any, Action> => async (dispatch) => {
   try {
-    dispatch(loadingBooking({ loading: true, status: 0 }));
-    const { data, status } = await postBooking(newBookingData);
+    console.log(newBookingPayload);
+    dispatch(loadingBooking({ loading: true, status: { code: 0, message: '' } }));
+    const { data, status, statusText } = await postBooking(newBookingPayload);
     if (data) {
       dispatch(createBooking(data));
-      dispatch(loadingBooking({ loading: false, status: 0 }));
+      dispatch(loadingBooking({ loading: false, status: { code: 0, message: '' } }));
     }
-    if (status === 409) loadingBooking({ loading: false, status });
+    if (status === 409)
+      loadingBooking({
+        loading: false,
+        status: { code: 409, message: 'Booking already exists' },
+      });
+    if (status > 0) {
+      console.log(status);
+      loadingBooking({ loading: false, status: { code: status, message: statusText } });
+    }
   } catch (error) {
-    const errorData = errorDataExtractor(error);
-    console.error(errorData);
+    const { message, code }: HttpError = errorDataExtractor(error);
+    dispatch(
+      loadingBooking({
+        loading: false,
+        status: { code, message },
+      }),
+    );
+    console.error({ message, code });
   }
 };
