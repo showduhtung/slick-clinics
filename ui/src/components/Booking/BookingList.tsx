@@ -39,9 +39,9 @@ export const BookingList = ({
   const [bookings, setBookings] = useState<DataInterface[]>();
 
   useEffect(() => {
-    if ((bookingData.length > 0, clinicData.length > 0)) {
+    if ((bookingData?.length > 0, clinicData?.length > 0)) {
       const newData =
-        userData.length > 0
+        userData?.length > 0
           ? mixBookClinicUsers(bookingData, clinicData, userData)
           : mixBookClinicUsers(bookingData, clinicData);
       setBookings(newData);
@@ -55,7 +55,7 @@ export const BookingList = ({
           <TableHead>
             <TableRow>
               <TableCell>Clinic Name</TableCell>
-              {userData.length > 0 && (
+              {userData?.length > 0 && (
                 <>
                   <TableCell align="right">User</TableCell>
                   <TableCell align="right">Email</TableCell>
@@ -71,7 +71,7 @@ export const BookingList = ({
                 <TableCell component="th" scope="row">
                   {booking.clinic}
                 </TableCell>
-                {userData.length > 0 && (
+                {userData?.length > 0 && (
                   <>
                     <TableCell align="right">{`${booking.user?.firstName} ${booking.user?.lastName}`}</TableCell>
                     <TableCell align="right">{booking.user?.email}</TableCell>
@@ -94,16 +94,14 @@ const mixBookClinicUsers = (
   userData?: UserData[],
 ): DataInterface[] => {
   const reformedBookings: DataInterface[] = [];
-  if (clinicData.length > 0 && bookingData.length > 0) {
+  if (clinicData?.length > 0 && bookingData?.length > 0) {
     bookingData.map((booking) => {
       const newTime = correctTime(booking.time);
       const clinic = findById(
         clinicData,
         booking.clinicId - 1 > -1 ? booking.clinicId : 0,
       );
-      console.log(userData, booking.userId);
       const user = userData && findById(userData, booking.userId);
-      console.log(user);
       reformedBookings.push({
         clinic: clinic.name,
         time: newTime,
