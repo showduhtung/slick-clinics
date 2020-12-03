@@ -11,6 +11,11 @@ export const getBookings = async (userId: number) => {
   checkStatus(res);
   return res;
 };
+export const getBookingsAsAdmin = async () => {
+  const res = await axios.get(`/api/bookings/admin`);
+  checkStatus(res);
+  return res;
+};
 
 export const postBooking = async (data: NewBookingPayload) => {
   data = { ...data, date: dataReadyStrungDate(data.date) };

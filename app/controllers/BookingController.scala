@@ -40,12 +40,24 @@ class BookingController @Inject()(protected val dbConfigProvider: DatabaseConfig
     }
   }
 
+  def getBookings() = Action.async { implicit request =>
+    val token = request.headers.get("Authorization")
+    if (session.checkTokenExpiration(token)) {
+      val bookingList = model.getBookings()
+      bookingList.map{
+        bookings => Ok(JsArray(bookings.map(booking => Json.obj("id" -> booking.id,"userId"-> booking.userid , "clinicId" -> booking.clinicid, "time" -> booking.time, "date" -> booking.date))))
+      } 
+    }
+    else Future(Unauthorized("No session available"))
+  }
+
+
   def getBookingsByUser(userId: Int) = Action.async { implicit request =>
     val token = request.headers.get("Authorization")
     if (session.checkTokenExpiration(token)) {
       val bookingList = model.getUserBookings(userId)
       bookingList.map{
-        bookings => Ok(JsArray(bookings.map(booking => Json.obj("id" -> booking.id, "clinicId" -> booking.clinicid, "time" -> booking.time, "date" -> booking.date))))
+        bookings => Ok(JsArray(bookings.map(booking => Json.obj("id" -> booking.id, "userId"-> booking.userid ,"clinicId" -> booking.clinicid, "time" -> booking.time, "date" -> booking.date))))
       } 
     }
     else Future(Unauthorized("No session available"))

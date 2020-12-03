@@ -13,6 +13,10 @@ class UserRepository(db: Database)(implicit ec: ExecutionContext) {
         db.run(User.filter(userRow => userRow.email === email && userRow.password === password).result.head)
     }
 
+    def getAllUsers: Future[Seq[Tables.UserRow]]= {
+        db.run(User.result)
+    }
+
     def createUser(firstname: String,lastname: String, password: String, email: String): Future[Option[Int]] = {
          val userExist = db.run(User.filter(userRow => userRow.email === email).result)      
          val usersList = db.run(User.result)

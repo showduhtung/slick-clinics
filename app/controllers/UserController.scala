@@ -16,6 +16,7 @@ import slick.jdbc.JdbcProfile
 class UserController @Inject()(protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents,
  ) extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
     private val model = new UserRepository(db)
+    private val session = new SessionRepository(db)
      
     def withJsonBody[A](f: A => Future[Result])(implicit request: Request[AnyContent], reads: Reads[A]): Future[Result] = {
         println(request.body.asJson)
@@ -28,6 +29,18 @@ class UserController @Inject()(protected val dbConfigProvider: DatabaseConfigPro
     }
     
     implicit val readCreateUser = Json.reads[CreateUserModel]
+
+    def getAllUsers= Action.async { implicit request =>
+        val token = request.headers.get("Authorization")
+        if (session.checkTokenExpiration(token) ) {
+            if (session.checkAdminPrivilege(token)) {
+                val usersList = model.getAllUsers
+                usersList.map{
+                    users => Ok(JsArray(users.map(user => Json.obj("id" -> user.id,"isAdmin" -> user.isAdmin, "firstName" -> user.firstname, "lastName" -> user.lastname, "email" -> user.email))))
+                } 
+            } else Future(Unauthorized("You're not an admin!"))
+        } else Future(Unauthorized("No session available"))
+    }
 
     def createUser = Action.async { implicit request => 
         withJsonBody[CreateUserModel] {

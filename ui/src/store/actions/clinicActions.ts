@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-import { postClinic, getClinics } from '../../apis/clinics';
+import { postClinic, getClinics } from '../../apis';
 import { ClinicData, LoadingPayload } from '../../shared/types';
 import { errorDataExtractor } from '../../shared/utilities';
 import { ClinicActionTypes, CLINIC_LOADING, CREATE_CLINIC, GET_CLINIC } from '../types';
