@@ -181,17 +181,17 @@ trait Tables {
    *  @param clinicid Database column clinicId SqlType(int4)
    *  @param userid Database column userId SqlType(int4)
    *  @param time Database column time SqlType(date) */
-  case class BookingRow(id: Int, clinicid: Int, userid: Int, time: java.sql.Date)
+  case class BookingRow(id: Int, clinicid: Int, userid: Int, date: java.sql.Date, time: String)
   /** GetResult implicit for fetching BookingRow objects using plain SQL queries */
   implicit def GetResultBookingRow(implicit e0: GR[Int], e1: GR[java.sql.Date]): GR[BookingRow] = GR{
     prs => import prs._
-    BookingRow.tupled((<<[Int], <<[Int], <<[Int], <<[java.sql.Date]))
+    BookingRow.tupled((<<[Int], <<[Int], <<[Int], <<[java.sql.Date], <<[String]))
   }
   /** Table description of table Booking. Objects of this class serve as prototypes for rows in queries. */
   class Booking(_tableTag: Tag) extends profile.api.Table[BookingRow](_tableTag, "Booking") {
-    def * = (id, clinicid, userid, time) <> (BookingRow.tupled, BookingRow.unapply)
+    def * = (id, clinicid, userid, date, time) <> (BookingRow.tupled, BookingRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(id), Rep.Some(clinicid), Rep.Some(userid), Rep.Some(time))).shaped.<>({r=>import r._; _1.map(_=> BookingRow.tupled((_1.get, _2.get, _3.get, _4.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(id), Rep.Some(clinicid), Rep.Some(userid), Rep.Some(date), Rep.Some(time))).shaped.<>({r=>import r._; _1.map(_=> BookingRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(int4), PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.PrimaryKey)
@@ -200,7 +200,8 @@ trait Tables {
     /** Database column userId SqlType(int4) */
     val userid: Rep[Int] = column[Int]("userId")
     /** Database column time SqlType(date) */
-    val time: Rep[java.sql.Date] = column[java.sql.Date]("time")
+    val date: Rep[java.sql.Date] = column[java.sql.Date]("date")
+    val time: Rep[String] = column[String]("time")
 
     /** Foreign key referencing Clinic (database name FK_21) */
     lazy val clinicFk = foreignKey("FK_21", clinicid, Clinic)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)

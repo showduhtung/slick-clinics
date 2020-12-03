@@ -43,8 +43,6 @@ class SessionRepository(db: Database)(implicit ec: ExecutionContext) {
     val session = 
       db.run(Session.filter(session => session.token === token).result.head)
         .map(sessionRow => checkExpirationDate(sessionRow.expiration))
-        
-    // hack to return Boolean
     Await.result(session, scala.concurrent.duration.Duration(1, "seconds"))
   }
 

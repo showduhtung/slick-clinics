@@ -1,27 +1,27 @@
 import {
-  ClinicActionTypes,
-  ClinicState,
-  CLINIC_LOADING,
-  CREATE_CLINIC,
-  GET_CLINIC,
+  BookingActionTypes,
+  BookingState,
+  BOOKING_LOADING,
+  CREATE_BOOKING,
+  GET_BOOKING,
 } from '../types';
 
-const initialState: ClinicState = {
+const initialState: BookingState = {
   data: [],
   loading: false,
   status: { code: 0, message: '' },
 };
 
-export const clinicReducer = (
+export const bookingReducer = (
   state = initialState,
-  action: ClinicActionTypes,
-): ClinicState => {
+  action: BookingActionTypes,
+): BookingState => {
   switch (action.type) {
-    case GET_CLINIC:
+    case GET_BOOKING:
       return { ...state, data: action.payload };
-    case CREATE_CLINIC:
+    case CREATE_BOOKING:
       return { ...state, data: [...state.data, action.payload], status: null };
-    case CLINIC_LOADING:
+    case BOOKING_LOADING:
       const { loading, status } = action.payload;
       return { ...state, loading, status };
     default:
