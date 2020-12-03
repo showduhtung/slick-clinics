@@ -16,6 +16,9 @@ export const getSplitToken = () => getToken()?.split('-');
 export const getUserIdFromToken: () => number | null = () =>
   getSplitToken && parseInt(getSplitToken()[0], 10);
 
+export const checkIsAdmin: () => boolean | null = () =>
+  getSplitToken && getSplitToken()[2] === 'true';
+
 export const setLocalStorageState = (type: string, newState: object) =>
   localStorage.setItem(`${type}_state`, JSON.stringify(newState));
 
@@ -67,7 +70,7 @@ const contrivedDateString = (num: number): string =>
   num < 10 ? `0${num.toString()}` : num.toString();
 
 export function removeToken() {
-  removeLocalStorageState('playclin_token');
+  return removeLocalStorageState('playclin_token');
 }
 
 const idxToMonth = [

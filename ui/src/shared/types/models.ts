@@ -28,8 +28,17 @@ export interface FormState {
 }
 
 export interface ClinicData {
+  id?: number;
   name: string | null;
   address: string | null;
+}
+
+export interface UserData {
+  id?: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  isAdmin: boolean;
 }
 
 export interface NewBookingPayload {
@@ -43,6 +52,7 @@ export interface BookingData {
   clinicId: number | null;
   time: string | null;
   date: number;
+  userId: number;
 }
 
 export interface LoadingPayload {

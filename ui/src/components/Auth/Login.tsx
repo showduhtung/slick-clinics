@@ -1,13 +1,12 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link as RouterLink } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -18,20 +17,8 @@ import { checkCredentials } from '../../store/actions';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
-import axios from 'axios';
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://getstung.me/">
-        Slick Clinics
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import { FormState, PasswordState } from '../../shared/types';
+import { Copyright, CustomTextField, PasswordForm, VisiblePassword } from '../shared';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,20 +54,24 @@ const useStyles = makeStyles((theme) => ({
 export const Login = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  // const [email, setEmail] = useState('shaun.tung@gmail.com');
-  const [email, setEmail] = useState('ted.chen@gmail.com');
-  const [password, setPassword] = useState('password');
+  const [email, setEmail] = useState<FormState>({
+    // value: getLocalStorageState('auth')?.email,
+    value: '',
+    valid: true,
+    message: '',
+  });
+  const [password, setPassword] = useState<PasswordState>({
+    value: '',
+    valid: true,
+    visible: false,
+    message: null,
+  });
 
   const { isTokenAvailable } = useSelector((state: RootState) => state.auth);
 
   function handleLogin(event?: FormEvent<HTMLFormElement>) {
     event?.preventDefault();
-    dispatch(checkCredentials(email, password));
-  }
-
-  async function handleClick() {
-    const res = await axios.post('/api/login', { email, password });
-    console.log(res);
+    dispatch(checkCredentials(email.value, password.value));
   }
 
   if (isTokenAvailable) return <Redirect to="/" />;
@@ -98,33 +89,23 @@ export const Login = () => {
             Sign in
           </Typography>
           <form className={classes.form} noValidate onSubmit={handleLogin}>
-            {/* <CustomTextField /> */}
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+            <CustomTextField
+              size="small"
               autoFocus
+              state={email}
+              onChange={setEmail}
+              title={'Email Address'}
             />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+            <PasswordForm
+              name={'Password'}
+              label={'Password'}
+              password={password}
+              handlePassword={setPassword}
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
             <Button
               type="submit"
               fullWidth
@@ -137,21 +118,18 @@ export const Login = () => {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
+                Forgot password?
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
+                <RouterLink to={`/auth/signUp`}>
+                  Don't have an account? Sign Up
+                </RouterLink>
               </Grid>
             </Grid>
             <Box mt={5}>
               <Copyright />
             </Box>
           </form>
-          <Button onClick={() => handleClick()}>Click Me</Button>
         </div>
       </Grid>
     </Grid>

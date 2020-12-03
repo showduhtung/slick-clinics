@@ -7,17 +7,20 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { BookingData, ClinicData } from '../../shared/types';
+import { BookingData, ClinicData, UserData } from '../../shared/types';
 import { convertDateToDisplay, reorganizedDate } from '../../shared/utilities';
 
 interface BookingListProps {
-  data: BookingData[];
+  bookingData: BookingData[];
   clinicData: ClinicData[];
+  userData?: UserData[];
+  admin: boolean;
 }
 interface DataInterface {
   clinic: string | null;
   time: string | null;
   date: string | null;
+  user?: UserData | null;
 }
 
 const useStyles = makeStyles({
@@ -26,16 +29,24 @@ const useStyles = makeStyles({
   },
 });
 
-export const BookingList = ({ data, clinicData }: BookingListProps) => {
+export const BookingList = ({
+  bookingData,
+  clinicData,
+  userData,
+  admin,
+}: BookingListProps) => {
   const classes = useStyles();
   const [bookings, setBookings] = useState<DataInterface[]>();
 
   useEffect(() => {
-    if ((data.length > 0, clinicData.length > 0)) {
-      const newData = mixBookingClinic(data, clinicData);
+    if ((bookingData?.length > 0, clinicData?.length > 0)) {
+      const newData =
+        userData?.length > 0
+          ? mixBookClinicUsers(bookingData, clinicData, userData)
+          : mixBookClinicUsers(bookingData, clinicData);
       setBookings(newData);
     }
-  }, [data, clinicData]);
+  }, [bookingData, clinicData, userData]);
   return (
     <>
       <h1>List of Bookings</h1>
@@ -44,6 +55,12 @@ export const BookingList = ({ data, clinicData }: BookingListProps) => {
           <TableHead>
             <TableRow>
               <TableCell>Clinic Name</TableCell>
+              {userData?.length > 0 && (
+                <>
+                  <TableCell align="right">User</TableCell>
+                  <TableCell align="right">Email</TableCell>
+                </>
+              )}
               <TableCell align="right">Date</TableCell>
               <TableCell align="right">Time</TableCell>
             </TableRow>
@@ -54,6 +71,12 @@ export const BookingList = ({ data, clinicData }: BookingListProps) => {
                 <TableCell component="th" scope="row">
                   {booking.clinic}
                 </TableCell>
+                {userData?.length > 0 && (
+                  <>
+                    <TableCell align="right">{`${booking.user?.firstName} ${booking.user?.lastName}`}</TableCell>
+                    <TableCell align="right">{booking.user?.email}</TableCell>
+                  </>
+                )}
                 <TableCell align="right">{booking.date}</TableCell>
                 <TableCell align="right">{booking.time}</TableCell>
               </TableRow>
@@ -65,21 +88,25 @@ export const BookingList = ({ data, clinicData }: BookingListProps) => {
   );
 };
 
-const mixBookingClinic = (
-  data: BookingData[],
+const mixBookClinicUsers = (
+  bookingData: BookingData[],
   clinicData: ClinicData[],
+  userData?: UserData[],
 ): DataInterface[] => {
   const reformedBookings: DataInterface[] = [];
-  if (clinicData.length > 0 && data.length > 0) {
-    data.map((booking) => {
+  if (clinicData?.length > 0 && bookingData?.length > 0) {
+    bookingData.map((booking) => {
       const newTime = correctTime(booking.time);
-      const checkClinicId = booking.clinicId - 1 > -1;
-      const clinicIndex = checkClinicId ? booking.clinicId - 1 : 0;
-      const clinic = clinicData[clinicIndex];
+      const clinic = findById(
+        clinicData,
+        booking.clinicId - 1 > -1 ? booking.clinicId : 0,
+      );
+      const user = userData && findById(userData, booking.userId);
       reformedBookings.push({
         clinic: clinic.name,
         time: newTime,
         date: reorganizedDate(convertDateToDisplay(new Date(booking.date))),
+        user: userData && user,
       });
     });
   }
@@ -93,3 +120,6 @@ const correctTime = (time: string): string => {
   const newHour = hour > 12 ? hour - 12 : hour;
   return `${newHour.toString()}:${minute} ${ampm}`;
 };
+
+const findById = (arr: any[], target: number) =>
+  arr.filter((el: any) => el.id === target)[0];

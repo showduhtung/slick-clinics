@@ -28,8 +28,8 @@ export const PatientContainer = () => {
   const [modalError, setModalError] = useState<HttpError | null>(null);
 
   const handleLogout = () => {
-    dispatch(logout());
     removeToken();
+    dispatch(logout());
   };
 
   const handleReset = () => {
@@ -38,15 +38,15 @@ export const PatientContainer = () => {
     setModalError(null);
   };
 
-  const checkBookings = (time: string, date: Date): boolean =>
+  const checkAvailableBookings = (time: string, date: Date): boolean =>
     bookingData.filter(
       (bd) => bd.time === time && new Date(bd.date).getTime() === date.getTime(),
-    ).length > 0;
+    ).length === 0;
 
   const handleNewBookings = (time: string) => {
     if (!time) {
       setModalError({ code: null, message: 'Please pick a valid time' });
-    } else if (checkBookings(time, selectedDate)) {
+    } else if (!checkAvailableBookings(time, selectedDate)) {
       setModalError({ code: null, message: 'You already have a booking at this time' });
     } else {
       dispatch(
@@ -107,7 +107,7 @@ export const PatientContainer = () => {
             })}
         </div>
         {bookingData && clinicData && (
-          <BookingList data={bookingData} clinicData={clinicData} />
+          <BookingList bookingData={bookingData} clinicData={clinicData} admin={false} />
         )}
       </Container>
     </>

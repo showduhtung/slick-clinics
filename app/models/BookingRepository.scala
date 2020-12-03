@@ -17,13 +17,13 @@ class BookingRepository(db: Database)(implicit ec: ExecutionContext) {
     def getClinicBookings(clinicId: Int): Future[Seq[Tables.BookingRow]] = db.run (
         Booking.filter(bookRow => bookRow.clinicid === clinicId).result
     )
-    def createBooking(time: String, date: String, userId: Int, clinicId: Int): Future[Option[Tables.BookingRow]]= {
-        // long javadate = 
-        // val javaDate = new Date(calendar.getTimeInMillis())
-        val javaDate = Date.valueOf(date)
-        
-        val BookingsList= db.run (Booking.result)
 
+    def getBookings(): Future[Seq[Tables.BookingRow]] = 
+        db.run (Booking.result)
+
+    def createBooking(time: String, date: String, userId: Int, clinicId: Int): Future[Option[Tables.BookingRow]]= {
+        val javaDate = Date.valueOf(date)
+        val BookingsList= db.run (Booking.result)
         BookingsList.flatMap { bookings =>
             val newId = bookings.length + 1
             db.run(Booking += Tables.BookingRow(newId, clinicId, userId, javaDate, time))

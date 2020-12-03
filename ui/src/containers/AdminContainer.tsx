@@ -3,23 +3,57 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Container } from '@material-ui/core';
 
 import { ClinicCard, NewClinicForm } from '../components/Clinic';
+import { BookingList } from '../components/Booking';
 import { Header } from '../components/shared';
-import { removeLocalStorageState } from '../shared/utilities';
-import { bootstrapClinics, createNewClinic, logout } from '../store/actions';
-import { ClinicData } from '../shared/types';
+import { checkIsAdmin, removeToken } from '../shared/utilities';
+import {
+  bootstrapClinics,
+  createNewClinic,
+  logout,
+  bootstrapBookingsAsAdmin,
+  bootstrapUsers,
+} from '../store/actions';
+import { ClinicData, HttpError } from '../shared/types';
 import { RootState } from '../store';
 
 export const AdminContainer = () => {
   const dispatch = useDispatch();
 
+  const isAdmin = checkIsAdmin();
+
+  const { data: userData } = useSelector((state: RootState) => state.user);
+  const { data: bookingData } = useSelector((state: RootState) => state.booking);
   const { data: clinicData, loading, status } = useSelector(
     (state: RootState) => state.clinic,
   );
   const [formState, setFormState] = useState(false);
   const [activeCard, setActiveCard] = useState(-1);
+  const [formError, setFormError] = useState<HttpError | null>(null);
+
+  const handleReset = () => {
+    setFormState(false);
+    setActiveCard(-1);
+    setFormError(null);
+  };
+
+  const checkAvailableClinicName = (data: ClinicData): boolean =>
+    clinicData.filter((cd) => cd.name === data.name).length == 0;
+
+  const checkAvailableClinicAddress = (data: ClinicData): boolean =>
+    clinicData.filter((cd) => cd.address === data.address).length === 0;
 
   const dispatchNewClinic = (newClinicData: ClinicData) => {
-    dispatch(createNewClinic(newClinicData));
+    if (!checkAvailableClinicName(newClinicData))
+      setFormError({ code: null, message: 'You already have a clinic with this name' });
+    else if (!checkAvailableClinicAddress(newClinicData))
+      setFormError({
+        code: null,
+        message: "This is kinda awkward, but there's already a clinic at that address",
+      });
+    else {
+      dispatch(createNewClinic(newClinicData));
+      handleReset();
+    }
   };
 
   useEffect(() => {
@@ -28,13 +62,14 @@ export const AdminContainer = () => {
   }, [loading]);
 
   useEffect(() => {
+    dispatch(bootstrapUsers());
     dispatch(bootstrapClinics());
+    dispatch(bootstrapBookingsAsAdmin());
   }, []);
 
   const handleLogout = () => {
-    removeLocalStorageState('playclin_token');
+    removeToken();
     dispatch(logout());
-    // return <Redirect to={'/auth/login'} />;a
   };
 
   return (
@@ -66,7 +101,9 @@ export const AdminContainer = () => {
             ))}
         </div>
 
-        <Button onClick={() => setFormState(true)}>Create a new clinic</Button>
+        <Button variant="contained" color="primary" onClick={() => setFormState(true)}>
+          Create a new clinic
+        </Button>
         <NewClinicForm
           open={formState}
           onClose={(
@@ -75,8 +112,16 @@ export const AdminContainer = () => {
               address: null,
             },
           ) => dispatchNewClinic(newClinicData)}
-          error={status.code === 409 && { code: status.code, message: status.message }}
+          error={formError}
         />
+        {bookingData && clinicData && (
+          <BookingList
+            bookingData={bookingData}
+            clinicData={clinicData}
+            userData={userData}
+            admin={isAdmin}
+          />
+        )}
       </Container>
     </>
   );
