@@ -83,7 +83,7 @@ export const NewClinicForm = ({ open, onClose, error }: NewClinicFormProps) => {
     <Dialog onClose={resetAndClose} aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">Create a new clinic</DialogTitle>
       {error && (
-        <Typography color="error">{`${error?.status}: ${error?.message}`}</Typography>
+        <Typography color="error">{`${error?.code}: ${error?.message}`}</Typography>
       )}
       <form className={classes.form} noValidate onSubmit={handleSubmit}>
         <CustomTextField

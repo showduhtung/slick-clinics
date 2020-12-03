@@ -5,7 +5,6 @@ import HtmlWebPackPlugin from 'html-webpack-plugin';
 const htmlPlugin = new HtmlWebPackPlugin({
   template: path.resolve('public/index.html'),
   filename: './index.html',
-  inject: false,
 });
 
 const config: webpack.Configuration = {

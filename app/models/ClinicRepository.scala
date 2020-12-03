@@ -4,11 +4,20 @@ import slick.jdbc.PostgresProfile.api._
 import scala.concurrent.ExecutionContext
 import models.Tables._
 import scala.concurrent.Future
+import scala.concurrent.duration.Duration
+import scala.concurrent.Await
 
 class ClinicRepository(db: Database)(implicit ec: ExecutionContext) {    
     def getClinics(): Future[Seq[Tables.ClinicRow]] = db.run (
         Clinic.result
     )
+
+    def getClinicById(id: Int): Tables.ClinicRow = {
+        val result = db.run(Clinic.filter(clnc => clnc.id === id).result.head)
+        Await.result(result, Duration(1, "seconds"))
+
+    }
+
     def createClinic(name: String, address: String): Future[Option[Tables.ClinicRow]]= {
         val clinicExist = db.run(Clinic.filter(clinicRow => clinicRow.name === name).result)
         val clinicsList= db.run(Clinic.result)

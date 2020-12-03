@@ -1,8 +1,6 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import { getSplitToken } from '../../shared/utilities';
-import { RootState } from '../../store';
 
 const validateUser = (condition: string): boolean => {
   const token = getSplitToken();

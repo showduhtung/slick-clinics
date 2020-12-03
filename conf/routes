@@ -7,14 +7,20 @@ GET     /                           controllers.FrontendController.index
 
 # An example route (Prefix all API routes with apiPrefix defined in application.conf)
 +nocsrf
-POST    /api/login                  controllers.AuthController.login
-GET     /api/summary                controllers.ClinicController.appSummary
-GET     /api/clinics                controllers.ClinicController.getClinics
+POST    /api/login                      controllers.AuthController.login
+GET     /api/summary                    controllers.ClinicController.appSummary
+GET     /api/clinics                    controllers.ClinicController.getClinics
 +nocsrf
-POST    /api/clinics                controllers.ClinicController.createClinic
-POST    /api/user                   controllers.UserController.createUser
+POST    /api/user                       controllers.UserController.createUser
++nocsrf
+POST    /api/clinics                    controllers.ClinicController.createClinic
+GET     /api/bookings/:userId/userId        controllers.BookingController.getBookingsByUser(userId: Int)
+# GET     /api/bookings/:clinicId/clinicId    controllers.BookingController.getBookingsByClinic(clinicId: Int)
+
++nocsrf
+POST    /api/bookings                   controllers.BookingController.createBooking
 
 # Serve static assets under public directory
-GET     /*file                      controllers.FrontendController.assetOrDefault(file)
+GET     /*file                          controllers.FrontendController.assetOrDefault(file)
 
-GET     /error             controllers.Default.error
+GET     /error                          controllers.Default.error
