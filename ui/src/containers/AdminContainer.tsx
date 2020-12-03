@@ -17,6 +17,7 @@ export const AdminContainer = () => {
     (state: RootState) => state.clinic,
   );
   const [formState, setFormState] = useState(false);
+  const [activeCard, setActiveCard] = useState(-1);
 
   const dispatchNewClinic = (newClinicData: ClinicData) => {
     dispatch(createNewClinic(newClinicData));
@@ -42,14 +43,30 @@ export const AdminContainer = () => {
     <>
       <Container>
         <Header profile={{ name: 'Admin' }} logout={handleLogout} />
-        {clinicData &&
-          clinicData.map((clinic: ClinicData, idx) => (
-            <ClinicCard
-              key={clinic.name + clinic.address.split(' ')[0] + idx}
-              name={clinic.name}
-              address={clinic.address}
-            />
-          ))}
+        <div
+          style={{
+            display: 'flex',
+            flexFlow: 'row wrap',
+          }}
+        >
+          {clinicData &&
+            clinicData.map((clinic: ClinicData, idx) => (
+              <div
+                style={{ width: '30%', height: '30%' }}
+                key={clinic.name + clinic.address.split(' ')[0] + idx}
+              >
+                <ClinicCard
+                  id={idx}
+                  name={clinic.name}
+                  address={clinic.address}
+                  expanded={activeCard}
+                  expandChild={(id) => setActiveCard(id)}
+                >
+                  <div>Admin</div>
+                </ClinicCard>
+              </div>
+            ))}
+        </div>
 
         <Button onClick={() => setFormState(true)}>Create a new clinic</Button>
         <NewClinicForm

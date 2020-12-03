@@ -74,7 +74,6 @@ interface ProfileProps {
 
 interface HeaderProps {
   profile: ProfileProps;
-  //   isAdmin: Boolean;
   logout: () => void;
 }
 

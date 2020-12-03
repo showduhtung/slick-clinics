@@ -31,3 +31,13 @@ export interface ClinicData {
   name: string | null;
   address: string | null;
 }
+
+export interface BookingData {
+  name: string | null;
+  address: string | null;
+}
+
+export interface LoadingPayload {
+  loading: boolean;
+  status: number;
+}

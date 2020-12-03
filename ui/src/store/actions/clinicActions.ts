@@ -2,15 +2,9 @@ import axios from 'axios';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { postClinic, getClinics } from '../../apis/clinics';
-import { ClinicData } from '../../shared/types';
+import { ClinicData, LoadingPayload } from '../../shared/types';
 import { errorDataExtractor } from '../../shared/utilities';
-import {
-  ClinicActionTypes,
-  CLINIC_LOADING,
-  CREATE_CLINIC,
-  GET_CLINIC,
-  LoadingPayload,
-} from '../types';
+import { ClinicActionTypes, CLINIC_LOADING, CREATE_CLINIC, GET_CLINIC } from '../types';
 
 export const getClinic = (data: ClinicData[]): ClinicActionTypes => ({
   type: GET_CLINIC,

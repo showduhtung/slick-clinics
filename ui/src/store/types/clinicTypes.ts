@@ -1,4 +1,4 @@
-import { ClinicData } from '../../shared/types';
+import { ClinicData, LoadingPayload } from '../../shared/types';
 
 /** Action Types */
 export const GET_CLINIC = 'GET_CLINIC';
@@ -14,11 +14,6 @@ interface GetClinicAction {
 interface CreateClinicAction {
   type: typeof CREATE_CLINIC;
   payload: ClinicData;
-}
-
-export interface LoadingPayload {
-  loading: boolean;
-  status: number;
 }
 interface ClinicLoadingAction {
   type: typeof CLINIC_LOADING;

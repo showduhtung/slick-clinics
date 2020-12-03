@@ -16,12 +16,10 @@ import play.api.libs.json._
 @Singleton
 class ClinicController @Inject()(protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents)extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
 
-
-
   private val model = new ClinicRepository(db)
   private val session = new SessionRepository(db)
 
-    def withJsonBody[A](f: A => Future[Result])(implicit request: Request[AnyContent], reads: Reads[A]): Future[Result] = {
+  def withJsonBody[A](f: A => Future[Result])(implicit request: Request[AnyContent], reads: Reads[A]): Future[Result] = {
     println(request.body.asJson)
     request.body.asJson.map { body =>
         Json.fromJson[A](body) match {
