@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-import { postBooking, getBookings } from '../../apis/bookings';
+import { postBooking, getBookings, getBookingsAsAdmin } from '../../apis';
 import {
   BookingData,
   HttpError,
@@ -35,6 +35,18 @@ export const bootstrapBookings = (
 ): ThunkAction<any, any, any, Action> => async (dispatch) => {
   try {
     const { data } = await getBookings(userId);
+    dispatch(getBooking(data));
+  } catch (error) {
+    const errorData = errorDataExtractor(error);
+    console.error(errorData);
+  }
+};
+
+export const bootstrapBookingsAsAdmin = (): ThunkAction<any, any, any, Action> => async (
+  dispatch,
+) => {
+  try {
+    const { data } = await getBookingsAsAdmin();
     dispatch(getBooking(data));
   } catch (error) {
     const errorData = errorDataExtractor(error);

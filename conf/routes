@@ -12,10 +12,11 @@ GET     /api/summary                    controllers.ClinicController.appSummary
 GET     /api/clinics                    controllers.ClinicController.getClinics
 +nocsrf
 POST    /api/user                       controllers.UserController.createUser
+GET     /api/users                      controllers.UserController.getAllUsers
 +nocsrf
 POST    /api/clinics                    controllers.ClinicController.createClinic
-GET     /api/bookings/:userId/userId        controllers.BookingController.getBookingsByUser(userId: Int)
-# GET     /api/bookings/:clinicId/clinicId    controllers.BookingController.getBookingsByClinic(clinicId: Int)
+GET     /api/bookings/:userId/userId    controllers.BookingController.getBookingsByUser(userId: Int)
+GET     /api/bookings/admin             controllers.BookingController.getBookings
 
 +nocsrf
 POST    /api/bookings                   controllers.BookingController.createBooking

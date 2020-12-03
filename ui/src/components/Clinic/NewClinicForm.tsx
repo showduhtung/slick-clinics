@@ -42,12 +42,12 @@ interface FormValueValidatingProps {
 export const NewClinicForm = ({ open, onClose, error }: NewClinicFormProps) => {
   const classes = useStyles();
   const [name, setName] = useState<FormState>({
-    value: 'Another Clinic',
+    value: '',
     valid: true,
     message: null,
   });
   const [address, setAddress] = useState<FormState>({
-    value: '335 Amwell Road, Hillsborough NJ 08844',
+    value: '',
     valid: true,
     message: null,
   });
@@ -83,7 +83,9 @@ export const NewClinicForm = ({ open, onClose, error }: NewClinicFormProps) => {
     <Dialog onClose={resetAndClose} aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">Create a new clinic</DialogTitle>
       {error && (
-        <Typography color="error">{`${error?.code}: ${error?.message}`}</Typography>
+        <Typography color="error">{`${error.code ? error.code + '' : ''} ${
+          error.message
+        }`}</Typography>
       )}
       <form className={classes.form} noValidate onSubmit={handleSubmit}>
         <CustomTextField
@@ -109,6 +111,15 @@ export const NewClinicForm = ({ open, onClose, error }: NewClinicFormProps) => {
           onClick={() => handleSubmit()}
         >
           Submit
+        </Button>
+        <Button
+          fullWidth
+          variant="outlined"
+          color="secondary"
+          className={classes.submit}
+          onClick={resetAndClose}
+        >
+          Cancel
         </Button>
       </form>
     </Dialog>
