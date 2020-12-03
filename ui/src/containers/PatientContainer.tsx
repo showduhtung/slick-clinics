@@ -7,42 +7,57 @@ import { Header } from '../components/shared';
 import { getStrungDate, getUserIdFromToken, removeToken } from '../shared/utilities';
 import { bootstrapClinics, logout } from '../store/actions';
 import { RootState } from '../store';
-import { ClinicData } from '../shared/types';
+import { ClinicData, HttpError } from '../shared/types';
 import { ClinicCard } from '../components/Clinic';
 import { bootstrapBookings, createNewBooking } from '../store/actions/bookingActions';
 
+const today = new Date(
+  new Date().getFullYear(),
+  new Date().getMonth(),
+  new Date().getDate(),
+);
 export const PatientContainer = () => {
   const dispatch = useDispatch();
 
   const { data: clinicData } = useSelector((state: RootState) => state.clinic);
-  const {
-    data: bookingData,
-    loading: bookingLoading,
-    status: bookingStatus,
-  } = useSelector((state: RootState) => state.booking);
+  const { data: bookingData } = useSelector((state: RootState) => state.booking);
 
   // for simplicity sake, we will only allow one accordion open at a time
   const [activeCard, setActiveCard] = useState(-1);
-  const [selectedDate, setSelectedDate] = useState<string>(getStrungDate(new Date()));
-  const [modalError, setModalError] = useState<string>('');
+  const [selectedDate, setSelectedDate] = useState<Date>(today);
+  const [modalError, setModalError] = useState<HttpError | null>(null);
 
   const handleLogout = () => {
     dispatch(logout());
     removeToken();
   };
 
-  const handleNewBookings = (time: string) => {
-    dispatch(
-      createNewBooking({
-        time,
-        date: selectedDate,
-        clinicId: activeCard + 1,
-        userId: getUserIdFromToken(),
-      }),
-    );
-    // reset
+  const handleReset = () => {
     setActiveCard(-1);
-    setSelectedDate(getStrungDate(new Date()));
+    setSelectedDate(today);
+    setModalError(null);
+  };
+
+  const checkBookings = (time: string, date: Date): boolean =>
+    bookingData.filter(
+      (bd) => bd.time === time && new Date(bd.date).getTime() === date.getTime(),
+    ).length > 0;
+
+  const handleNewBookings = (time: string) => {
+    if (!time) {
+      setModalError({ code: null, message: 'Please pick a valid time' });
+    } else if (checkBookings(time, selectedDate)) {
+      setModalError({ code: null, message: 'You already have a booking at this time' });
+    } else {
+      dispatch(
+        createNewBooking({
+          time,
+          date: getStrungDate(selectedDate),
+          clinicId: activeCard + 1,
+          userId: getUserIdFromToken(),
+        }),
+      );
+    }
   };
 
   useEffect(() => {
@@ -51,18 +66,10 @@ export const PatientContainer = () => {
   }, []);
 
   useEffect(() => {
-    if (!bookingLoading) {
-      if (bookingStatus.code < 300 && selectedDate !== getStrungDate(new Date()))
-        if (bookingStatus.code > 299) {
-          if (selectedDate !== getStrungDate(new Date())) {
-            setModalError(status);
-          } else {
-            setSelectedDate(getStrungDate(new Date()));
-          }
-        }
+    if (selectedDate !== today) {
+      handleResetModal();
     }
-  }, [bookingStatus, bookingLoading]);
-
+  }, [bookingData]);
   return (
     <>
       <Container>
@@ -88,8 +95,10 @@ export const PatientContainer = () => {
                     <>
                       <BookingCalendar date={selectedDate} setDate={setSelectedDate} />
                       <BookingModal
-                        open={selectedDate !== getStrungDate(new Date())}
-                        onClose={handleNewBookings}
+                        open={selectedDate !== today}
+                        reset={handleReset}
+                        onSubmit={handleNewBookings}
+                        error={modalError}
                       />
                     </>
                   </ClinicCard>
@@ -97,7 +106,9 @@ export const PatientContainer = () => {
               );
             })}
         </div>
-        <BookingList data={bookingData} clinicData={clinicData} />
+        {bookingData && clinicData && (
+          <BookingList data={bookingData} clinicData={clinicData} />
+        )}
       </Container>
     </>
   );

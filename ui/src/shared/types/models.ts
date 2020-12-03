@@ -1,5 +1,5 @@
 export interface HttpError {
-  code: number;
+  code: number | null;
   message: string;
 }
 
@@ -41,7 +41,8 @@ export interface NewBookingPayload {
 export interface BookingData {
   id: number;
   clinicId: number | null;
-  time: number | null;
+  time: string | null;
+  date: number;
 }
 
 export interface LoadingPayload {

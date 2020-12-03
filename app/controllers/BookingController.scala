@@ -45,7 +45,7 @@ class BookingController @Inject()(protected val dbConfigProvider: DatabaseConfig
     if (session.checkTokenExpiration(token)) {
       val bookingList = model.getUserBookings(userId)
       bookingList.map{
-        bookings => Ok(JsArray(bookings.map(booking => Json.obj("id" -> booking.id, "clinicId" -> booking.clinicid, "time" -> booking.time))))
+        bookings => Ok(JsArray(bookings.map(booking => Json.obj("id" -> booking.id, "clinicId" -> booking.clinicid, "time" -> booking.time, "date" -> booking.date))))
       } 
     }
     else Future(Unauthorized("No session available"))

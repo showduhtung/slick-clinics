@@ -1,9 +1,10 @@
-import React, { FormEvent, useState } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import { MenuItem, Select } from '@material-ui/core';
+import { MenuItem, Select, Typography } from '@material-ui/core';
+import { HttpError } from '../../shared/types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,27 +34,41 @@ const useStyles = makeStyles((theme) => ({
 
 interface BookingModalProps {
   open: boolean;
-  onClose: (arg1: string) => void;
+  reset: () => void;
+  onSubmit: (arg1: string) => void;
+  error: HttpError | null;
 }
 
-export const BookingModal = ({ open, onClose }: BookingModalProps) => {
+export const BookingModal = ({ open, onSubmit, reset, error }: BookingModalProps) => {
   const classes = useStyles();
   const [time, setTime] = useState('');
-  function handleClose() {
-    onClose(time);
+  const [menuState, setMenuState] = useState(false);
+
+  function handleSubmit() {
+    onSubmit(time);
   }
   return (
-    <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
+    <Dialog onClose={reset} aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">Make a booking</DialogTitle>
+      {error && (
+        <Typography color="error">{`${error.code ? error.code + '' : ''} ${
+          error.message
+        }`}</Typography>
+      )}
       <div className={classes.modal}>
         <Select
           className={classes.select}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setTime(event.target.value)
-          }
+          open={open && menuState}
+          onOpen={() => setMenuState(true)}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setTime(event.target.value);
+            setMenuState(false);
+          }}
         >
-          {timeOptions.map((option) => (
-            <MenuItem value={option.value}>{option.display}</MenuItem>
+          {timeOptions.map((option, idx) => (
+            <MenuItem key={option.value + '-' + idx} value={option.value}>
+              {option.display}
+            </MenuItem>
           ))}
         </Select>
         <Button
@@ -61,9 +76,18 @@ export const BookingModal = ({ open, onClose }: BookingModalProps) => {
           variant="contained"
           color="primary"
           className={classes.submit}
-          onClick={() => handleClose()}
+          onClick={handleSubmit}
         >
           Submit
+        </Button>
+        <Button
+          fullWidth
+          variant="outlined"
+          color="secondary"
+          className={classes.submit}
+          onClick={reset}
+        >
+          Cancel
         </Button>
       </div>
     </Dialog>

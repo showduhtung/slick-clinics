@@ -1,20 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { getStrungDate } from '../../shared/utilities';
 
 interface BookingProps {
-  date: string;
-  setDate: (arg1: string) => void;
+  date: Date;
+  setDate: (arg1: Date) => void;
 }
 
 export const BookingCalendar = ({ date, setDate }: BookingProps) => {
   return (
     <>
-      <Calendar
-        value={new Date(date)}
-        onChange={(value: Date) => setDate(getStrungDate(value))}
-      />
+      <Calendar value={date} onChange={(value: Date) => setDate(value)} />
     </>
   );
 };
