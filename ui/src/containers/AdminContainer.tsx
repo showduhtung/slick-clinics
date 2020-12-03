@@ -36,11 +36,8 @@ export const AdminContainer = () => {
     setFormError(null);
   };
 
-  const checkAvailableClinicName = (data: ClinicData): boolean => {
-    const not = clinicData.filter((cd) => cd.name === data.name);
-    console.log('checkAvailableClinicName', not);
-    return not.length === 0;
-  };
+  const checkAvailableClinicName = (data: ClinicData): boolean =>
+    clinicData.filter((cd) => cd.name === data.name).length == 0;
 
   const checkAvailableClinicAddress = (data: ClinicData): boolean =>
     clinicData.filter((cd) => cd.address === data.address).length === 0;
@@ -104,7 +101,9 @@ export const AdminContainer = () => {
             ))}
         </div>
 
-        <Button onClick={() => setFormState(true)}>Create a new clinic</Button>
+        <Button variant="contained" color="primary" onClick={() => setFormState(true)}>
+          Create a new clinic
+        </Button>
         <NewClinicForm
           open={formState}
           onClose={(
