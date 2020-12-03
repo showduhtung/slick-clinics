@@ -67,7 +67,7 @@ export const PatientContainer = () => {
 
   useEffect(() => {
     if (selectedDate !== today) {
-      handleResetModal();
+      handleReset();
     }
   }, [bookingData]);
   return (
